@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <buche-node v-if="tree" :node="tree" @update:node="tree = $event"></buche-node>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BucheNode from './components/BucheNode.vue';
+import uuidv4 from "uuid/v4";
+import { sample_text } from './sample_text';
 
 export default {
   name: 'App',
+  data() {
+    return {
+      tree: null,
+    };
+  },
   components: {
-    HelloWorld
+    BucheNode
+  },
+  mounted() {
+    if (!this.tree) {
+      this.tree = {
+        root: true,
+        type: 'root',
+        data: sample_text(),
+        children: [],
+        uuid: uuidv4(),
+      }
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
