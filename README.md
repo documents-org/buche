@@ -1,5 +1,7 @@
 # buche
 
+Base d'éditeur d'arbre récursif.
+
 ## Project setup
 ```
 yarn install
