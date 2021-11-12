@@ -5,6 +5,12 @@ Base d'éditeur d'arbre récursif et arbitraire. Deux composants opaques, `Buche
 - Un noeud racine
 - Une liste de blocs autorisés, dont le bloc générique (voir section "Usage")
 
+## Bring your own blocks
+
+Bûche n'inclut pas de blocs (composants d'édition), seulement la mécanique pour construire une expérience d'édition par blocs. C'est à vous d'implémenter vos blocs.
+
+Quelques idées de blocs : Titre, Code, Texte, Image, Vidéo (plusieurs hébergeurs), Embed tiers, Table des matières, Tableau ...
+
 ## Objectifs
 
 - [x] Mécaniques de base (récursion infinie, ajout, supression, réordonnement, copier/coller, téléportation) sur l'arbre.
