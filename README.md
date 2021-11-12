@@ -1,4 +1,4 @@
-# buche
+# 🪵 buche
 
 Base d'éditeur d'arbre récursif et arbitraire. Deux composants opaques, `BucheNode` et `BucheBranch` créent un éditeur. Le `BucheNode` racine doit simplement recevoir :
 
