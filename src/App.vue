@@ -1,18 +1,16 @@
 <template>
   <div id="app">
-    <buche-node
+    <buche
       :blocks="blocks"
-      :path="[]"
-      v-if="tree"
       :node="tree"
-      @update:node="tree = $event"></buche-node>
+      @update:node="tree = $event"></buche>
   </div>
 </template>
 
 <script>
 // eslint-disable-next-line
 import bulma from "bulma/css/bulma.min.css";
-import BucheNode from './components/BucheNode.vue';
+import Buche from './components/Buche.vue';
 import uuidv4 from "uuid/v4";
 import { blocks } from "./blocks";
 
@@ -25,7 +23,7 @@ export default {
     };
   },
   components: {
-    BucheNode
+    Buche
   },
   mounted() {
     if (!this.tree) {

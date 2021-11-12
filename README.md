@@ -1,6 +1,6 @@
 # 🪵 buche
 
-Base d'éditeur d'arbre récursif et arbitraire. Deux composants opaques, `BucheNode` et `BucheBranch` créent un éditeur. Le `BucheNode` racine doit simplement recevoir :
+Base d'éditeur d'arbre récursif et arbitraire. Un composant opaque, `Buche`, crée un éditeur. Le `Buche` racine doit simplement recevoir :
 
 - Un noeud racine
 - Une liste de blocs autorisés, dont le bloc générique (voir section "Usage")
@@ -35,12 +35,9 @@ La seule contrainte : le bloc générique doit s'appeler `generic` et le noeud d
 App.vue :
 
 ```vue
-<buche-node
-      :blocks="blocks"
-      :path="[]"
-      v-if="tree"
+<buche :blocks="blocks"
       :node="tree"
-      @update:node="tree = $event"></buche-node>
+      @update:node="tree = $event"></buche>
 ```
 
 Où `tree` est le noeud de départ, comme cela (instance de `generic_block.constructor()` ):
