@@ -17,6 +17,7 @@ Quelques idées de blocs : Titre, Code, Texte, Image, Vidéo (plusieurs héberge
 - [x] Passage d'une liste de blocs extérieure aux composants.
 - [x] Assez de classes CSS pour styler l'éditeur
 - [x] Skin par défaut basé sur Bulma
+- [ ] Traduction de l'interface
 - [ ] Gestion de règles avancées
 - [x] Blocs étant eux-mêmes des arbres (2 colonnes, 4 colonnes)
 - [x] Enfants autorisés / interdis, enfants mini, enfants maxi
