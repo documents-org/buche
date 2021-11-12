@@ -1,22 +1,29 @@
 <template>
   <div class="BucheNode">
-      <h3><span v-if="node.root">Root</span>  Node {{ node.uuid }}</h3>
-      <p>{{ node.data }}</p>
+      <h3><span>{{find_block(node.type).label}}</span> <span class="uuid">{{ node.uuid }}</span></h3>
       <h4 v-if="teleport_candidate === node.uuid">Ready for teleportation !</h4>
       <h4 v-if="copy_candidate === node.uuid">Ready for copy !</h4>
+        <div v-if="node.type !== 'generic'">
+            <component :is="find_block(node.type).editor"
+                       :value="node.data"
+                       @update:value="node.data = $event"></component>
+        </div>
       <div v-if="!node.root">
         <button :disabled="index && index === 0" @click="$emit('before', node.uuid)">move before</button>
         <button :disabled="index && index === total - 1" @click="$emit('after', node.uuid)">move after</button>
         <button @click="$emit('copy', node.uuid)">copy</button>
         <button @click="$emit('teleport', node.uuid)">select for teleportation</button>
-        <button @click="$emit('destroy')">delete</button>
+        <button :disabled="!can_destroy" @click="$emit('destroy')">delete</button>
       </div>
-      <div v-if="node.children">
-          <h4>Children</h4>
+      <div class="buchenode_children" v-if="find_block(node.type).has_children">
           <div v-if="node.children.length === 0">No children yet.</div>
           <div v-else>
               <buche-branch
                 :nodes="node.children"
+                :path="[...path, node.type]"
+                :blocks="blocks"
+                :can_destroy="!(find_block(node.type).children_min)
+                    || find_block(node.type).children_min < node.children.length"
                 @copy="copy"
                 @want_teleport="handle_want_teleport"
                 @teleport="teleport"
@@ -25,7 +32,11 @@
                 :teleport_candidate="is_root ? root_teleport_candidate : teleport_candidate"
                 @update:nodes="update_nodes"></buche-branch>
           </div>
-          <button @click="add_child">Add a child node</button>
+          <div v-if="!(find_block(node.type).children_max)
+            || find_block(node.type).children_max > node.children.length">
+            <button v-for="(v, key) in blocks"
+                :key="key" @click="add_child(v)">Add a {{ v.label }}</button>
+          </div>
           <div v-if="teleport_candidate && teleport_candidate !== node.uuid">
               <button @click="want_teleport">Receive teleport candidate !</button>
           </div>
@@ -87,8 +98,6 @@ const teleport_in_tree = (node, to_teleport, destination_uuid) => {
     return remove_from_tree(tree, to_teleport.uuid);
 };
 
-import {sample_text} from "./../sample_text";
-
 export default {
   components: { BucheBranch },
     name: 'BucheNode',
@@ -100,10 +109,13 @@ export default {
     },
     props: {
         node: {},
+        blocks: {},
+        path: {},
         index: {},
         total: {},
         copy_candidate: {},
-        teleport_candidate: {}
+        teleport_candidate: {},
+        can_destroy: {},
     },
     computed: {
         is_root() {
@@ -111,6 +123,9 @@ export default {
         },
     },
     methods: {
+        find_block(type) {
+            return this.blocks[type];
+        },
         trigger_teleport(to_uuid) {
             const source_uuid = this.root_teleport_candidate;
             const source_node = find_node(this.node, source_uuid);
@@ -173,18 +188,12 @@ export default {
                 children: payload
             });
         },
-        add_child() {
+        add_child(block) {
             this.$emit('update:node', {
                 ...this.node,
                 children: [
                     ...this.node.children,
-                    {
-                        root: false,
-                        type: 'generic',
-                        children: [],
-                        data: sample_text(),
-                        uuid: uuidv4(),
-                    }
+                    block.constructor(),
                 ]
             });
         },

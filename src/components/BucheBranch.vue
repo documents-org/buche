@@ -7,6 +7,9 @@
       :total="nodes.length"
       :copy_candidate="copy_candidate"
       :teleport_candidate="teleport_candidate"
+      :path="[...path, node.type]"
+      :blocks="blocks"
+      :can_destroy="can_destroy"
       @before="handle_before(node.uuid)"
       @after="handle_after(node.uuid)"
       @want_teleport="$emit('want_teleport', $event)"
@@ -30,6 +33,9 @@ export default {
     },
     copy_candidate: {},
     teleport_candidate: {},
+    path: {},
+    blocks: {},
+    can_destroy: {},
   },
   beforeCreate: function () {
     this.$options.components.BucheNode = require("./BucheNode.vue").default;
