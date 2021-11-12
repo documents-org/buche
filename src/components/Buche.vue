@@ -5,7 +5,7 @@
     :depth="0"
     :index="0"
     :total="1"
-    :root="1"
+    :root="true"
     @want_teleport="trigger_teleport"
     @want_copy="trigger_copy"
     @teleport="
