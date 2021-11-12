@@ -9,8 +9,8 @@ Base d'éditeur d'arbre récursif et arbitraire. Deux composants opaques, `Buche
 
 - [x] Mécaniques de base (récursion infinie, ajout, supression, réordonnement, copier/coller, téléportation) sur l'arbre.
 - [x] Passage d'une liste de blocs extérieure aux composants.
-- [ ] Assez de classes CSS pour styler l'éditeur
-- [ ] Skin par défaut basé sur Bulma
+- [x] Assez de classes CSS pour styler l'éditeur
+- [x] Skin par défaut basé sur Bulma
 - [ ] Gestion de règles avancées
 - [x] Blocs étant eux-mêmes des arbres (2 colonnes, 4 colonnes)
 - [x] Enfants autorisés / interdis, enfants mini, enfants maxi
@@ -18,6 +18,9 @@ Base d'éditeur d'arbre récursif et arbitraire. Deux composants opaques, `Buche
 ![screenshot](buche.png)
 
 ## Usage
+
+Si vous souhaitez utiliser l'éditeur tel-quel, installez et appelez le CSS de [Bulma](https://bulma.io/documentation/).
+Sinon, écrivez une feuille de style basée sur les classes visibles dans BucheNode.vue.
 
 La seule contrainte : le bloc générique doit s'appeler `generic` et le noeud de départ doit en être une instance. Il doit donc exister dans vos définitions de blocs  personnalisés. Pour cela, vous pouvez l'importer.
 

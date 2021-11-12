@@ -3,6 +3,7 @@
     <buche-node
       v-for="(node, index) in nodes"
       :node="node"
+      :depth="depth"
       :index="index"
       :total="nodes.length"
       :copy_candidate="copy_candidate"
@@ -34,6 +35,7 @@ export default {
     copy_candidate: {},
     teleport_candidate: {},
     path: {},
+    depth: {},
     blocks: {},
     can_destroy: {},
   },

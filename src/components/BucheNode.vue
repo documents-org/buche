@@ -1,17 +1,23 @@
 <template>
   <div
     class="BucheNode box"
+    :style="{background: `rgba(0,0,0, ${0.03 * (depth % 4)})`}"
     :class="{
       [`BucheNode_node-${node.type}`]: 1,
       'BucheNode--will_be_teleported': teleport_candidate === node.uuid,
       'BucheNode--will_be_copied': copy_candidate === node.uuid,
     }"
   >
-    <h3 class="BucheNode_title subtitle">
-      <span class="BucheNode_type">{{ find_block(node.type).label }}</span>
-      <div class="BucheNode_actions buttons" v-if="!node.root">
+    <div class="BucheNode_header">
+      <div style="display: flex;">
+          <button class="button is-small" @click="folded = !folded">{{ folded ? 'unfold' : 'fold' }}</button>
+          &nbsp;
+          <h3 class="BucheNode_title subtitle">{{ find_block(node.type).label }}</h3>
+      </div>
+      <div v-show="!folded" class="BucheNode_actions buttons" v-if="!node.root">
         <button
           class="BucheNode_action_reorder_prev button is-small"
+          v-show="show_actions"
           :disabled="index && index === 0"
           @click="$emit('before', node.uuid)"
         >
@@ -19,6 +25,7 @@
         </button>
         <button
           class="BucheNode_action_reorder_next button is-small"
+          v-show="show_actions"
           :disabled="index && index === total - 1"
           @click="$emit('after', node.uuid)"
         >
@@ -26,6 +33,7 @@
         </button>
         <button
           class="BucheNode_action_reorder_copy button is-small"
+          v-show="show_actions"
           :class="copy_candidate === node.uuid ? 'is-primary' : ''"
           @click="$emit('copy', node.uuid)"
         >
@@ -33,6 +41,7 @@
         </button>
         <button
           class="BucheNode_action_reorder_teleport button is-small"
+          v-show="show_actions"
           :class="teleport_candidate === node.uuid ? 'is-primary' : ''"
           @click="$emit('teleport', node.uuid)"
         >
@@ -40,15 +49,24 @@
         </button>
         <button
           class="BucheNode_action_reorder_destroy button is-small"
+          v-show="show_actions"
           :disabled="!can_destroy"
           @click="$emit('destroy')"
         >
           delete
         </button>
+        <button
+            v-show="show_actions"
+            @click="show_actions = 0"
+            class="BucheNode_action_hide_actions button is-small">&times;</button>
+            <button
+            v-show="!show_actions"
+            @click="show_actions = 1"
+            class="BucheNode_action_hide_actions button is-small">actions</button>
       </div>
-    </h3>
+    </div>
 
-    <div class="BucheNode_editor" v-if="node.type !== 'generic'">
+    <div class="BucheNode_editor" v-show="!folded" v-if="node.type !== 'generic'">
       <component
         :is="find_block(node.type).editor"
         :value="node.data"
@@ -56,7 +74,7 @@
       ></component>
     </div>
 
-    <div class="BucheNode_children" v-if="find_block(node.type).has_children">
+    <div class="BucheNode_children" v-show="!folded" v-if="find_block(node.type).has_children">
       <div class="BucheNode_children_empty" v-if="node.children.length === 0">
         No children yet.
       </div>
@@ -69,6 +87,7 @@
             !find_block(node.type).children_min ||
             find_block(node.type).children_min < node.children.length
           "
+          :depth="depth + 1"
           @copy="copy"
           @want_teleport="handle_want_teleport"
           @teleport="teleport"
@@ -116,7 +135,7 @@
         </button>
       </div>
     </div>
-    <span class="BucheNode_uuid is-size-7">{{ node.uuid.slice(0, 8) }}</span>
+    <span v-show="!folded" class="BucheNode_uuid is-size-7">{{ node.uuid.slice(0, 8) }}</span>
   </div>
 </template>
 
@@ -183,17 +202,40 @@ export default {
     return {
       root_teleport_candidate: null,
       root_copy_candidate: null,
+      show_actions: false,
+      show_adders: false,
+      folded: false,
     };
   },
   props: {
-    node: {},
-    blocks: {},
-    path: {},
-    index: {},
-    total: {},
+    node: {
+        type: Object,
+        required: true,
+    },
+    depth: {
+        type: Number,
+        default: 0,
+    },
+    blocks: {
+        type: Object,
+        default: () => ({}),
+    },
+    path: {
+        type: Array,
+        default: () => ([]),
+    },
+    index: {
+        type: Number,
+    },
+    total: {
+        type: Number,
+    },
     copy_candidate: {},
     teleport_candidate: {},
-    can_destroy: {},
+    can_destroy: {
+        type: Boolean,
+        default: true,
+    },
   },
   computed: {
     is_root() {
@@ -279,10 +321,16 @@ export default {
 </script>
 
 <style>
-.BucheNode_title {
+.BucheNode {
+    margin-bottom: 2em;
+}
+.BucheNode_header {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
+}
+.BucheNode_children {
+    margin: 1em 0;
 }
 </style>
