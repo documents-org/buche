@@ -10,6 +10,8 @@
 </template>
 
 <script>
+// eslint-disable-next-line
+import bulma from "bulma/css/bulma.min.css";
 import BucheNode from './components/BucheNode.vue';
 import uuidv4 from "uuid/v4";
 import { blocks } from "./blocks";
@@ -44,26 +46,5 @@ html, body {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.2;
-}
-
-h1, h2, h3, h4, h5, h6, p, ul, li {
-  margin-top: 0;
-}
-
-button {
-  margin: 2px;
-}
-.uuid {
-  font-size: 0.8em;
-  font-weight: 400;
-  display: inline-block;
-  margin-left: auto;
-  color: #333;
-}
-
-.buchenode_children {
-  padding: 4px;
-  background: white;
-  margin: 4px;
 }
 </style>
