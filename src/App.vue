@@ -44,5 +44,21 @@ html, body {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.2;
+  min-height: 100%;
+  background: #666;
+}
+
+.Buche {
+  margin: 2em;
+}
+
+.BucheNode_node-cols_2 > .BucheNode_children > .BucheBranch {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.BucheNode_node-cols_2 > .BucheNode_children > .BucheBranch > .BucheNode {
+  flex: 0 0 calc(50% - 1em);
 }
 </style>

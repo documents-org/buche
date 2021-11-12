@@ -1,30 +1,41 @@
 <template>
-<buche-node
-      v-if="node"
-      :depth="0"
-      :index="0"
-      :total="1"
-      :root="1"
-      @want_teleport="trigger_teleport"
-      @want_copy="trigger_copy"
-      @teleport="root_teleport_candidate = $event === root_teleport_candidate ? null : $event"
-      @copy="root_copy_candidate = $event === root_copy_candidate ? null : $event"
-      :blocks="blocks"
-      :path="[]"
-      :copy_candidate="root_copy_candidate"
-      :teleport_candidate="root_teleport_candidate"
-      :node="node"
-      @update:node="$emit('update:node', $event)"></buche-node>
+    <div class="Buche box">
+  <buche-node
+    v-if="node"
+    :depth="0"
+    :index="0"
+    :total="1"
+    :root="1"
+    @want_teleport="trigger_teleport"
+    @want_copy="trigger_copy"
+    @teleport="
+      root_teleport_candidate =
+        $event === root_teleport_candidate ? null : $event
+    "
+    @copy="root_copy_candidate = $event === root_copy_candidate ? null : $event"
+    :blocks="blocks"
+    :path="[]"
+    :copy_candidate="root_copy_candidate"
+    :teleport_candidate="root_teleport_candidate"
+    :node="node"
+    @update:node="$emit('update:node', $event)"
+  ></buche-node>
+    </div>
 </template>
 
 <script>
-import {teleport_in_tree, find_node, refresh_uuids, insert_in_tree} from "../tree_functions";
-import BucheNode from './BucheNode.vue';
+import {
+  teleport_in_tree,
+  find_node,
+  refresh_uuids,
+  insert_in_tree,
+} from "../tree_functions";
+import BucheNode from "./BucheNode.vue";
 
 export default {
   name: "Buche",
   components: {
-      BucheNode,
+    BucheNode,
   },
   props: {
     node: {},
