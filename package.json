@@ -1,6 +1,7 @@
 {
   "name": "buche",
   "version": "0.1.0",
+  "main": "dist/buche.common.js",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
