@@ -4881,6 +4881,10 @@ module.exports = function (key) {
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "generic_block", function() { return /* reexport */ generic_block; });
+__webpack_require__.d(__webpack_exports__, "Buche", function() { return /* reexport */ out_Buche; });
+
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 // This file is imported into lib/wc client bundles.
 
@@ -5074,10 +5078,32 @@ var component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var Buche = (component.exports);
+// CONCATENATED MODULE: ./src/generic_block.js
+
+var generic_block = {
+  type: 'generic',
+  label: 'Groupe',
+  constructor: function constructor() {
+    return {
+      data: {},
+      root: false,
+      type: 'generic',
+      children: [],
+      uuid: v4_default()()
+    };
+  },
+  children_min: 0,
+  has_children: true
+};
+// CONCATENATED MODULE: ./src/out.js
+
+
+/* harmony default export */ var out = (Buche);
+var out_Buche = Buche;
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
 
-/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (Buche);
+/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (out);
 
 
 
@@ -5227,5 +5253,5 @@ module.exports = NATIVE_SYMBOL
 
 /***/ })
 
-/******/ })["default"];
+/******/ });
 //# sourceMappingURL=buche.common.js.map
