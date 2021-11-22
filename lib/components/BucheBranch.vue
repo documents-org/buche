@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import BucheNode from './BucheNode.vue'
+
 export default {
   name: "BucheBranch",
   props: {
@@ -40,27 +42,30 @@ export default {
     can_destroy: {},
   },
   beforeCreate: function () {
-    this.$options.components.BucheNode = require("./BucheNode.vue").default;
+    this.$options.components = { BucheNode };
   },
   methods: {
     handle_before(uuid) {
-        const index = this.nodes.findIndex(n => n.uuid === uuid);
-        if (index === 0 || !index) return;
-        const nodes = [...this.nodes];
-        const item = nodes.splice(index, 1)[0];
-        nodes.splice(index - 1, 0, item);
-        this.$emit('update:nodes', nodes);
+      const index = this.nodes.findIndex((n) => n.uuid === uuid);
+      if (index === 0 || !index) return;
+      const nodes = [...this.nodes];
+      const item = nodes.splice(index, 1)[0];
+      nodes.splice(index - 1, 0, item);
+      this.$emit("update:nodes", nodes);
     },
     handle_after(uuid) {
-        const index = this.nodes.findIndex(n => n.uuid === uuid);
-        if (index === this.nodes.length -1 || (!index && index !== 0)) return;
-        const nodes = [...this.nodes];
-        const item = nodes.splice(index, 1)[0];
-        nodes.splice(index + 1, 0, item);
-        this.$emit('update:nodes', nodes);
+      const index = this.nodes.findIndex((n) => n.uuid === uuid);
+      if (index === this.nodes.length - 1 || (!index && index !== 0)) return;
+      const nodes = [...this.nodes];
+      const item = nodes.splice(index, 1)[0];
+      nodes.splice(index + 1, 0, item);
+      this.$emit("update:nodes", nodes);
     },
     handle_destroy(uuid) {
-        this.$emit('update:nodes', [...this.nodes].filter(a => a.uuid !== uuid));
+      this.$emit(
+        "update:nodes",
+        [...this.nodes].filter((a) => a.uuid !== uuid)
+      );
     },
     updateBranch(uuid, node) {
       this.$emit(
