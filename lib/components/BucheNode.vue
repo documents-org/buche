@@ -96,7 +96,7 @@
       <div class="BucheNode_children_empty" v-if="node.children.length === 0">
         No children yet.
       </div>
-      
+
         <buche-branch
           :nodes="node.children"
           :path="[...path, node.type]"
@@ -114,7 +114,7 @@
           :teleport_candidate="teleport_candidate"
           @update:nodes="update_nodes"
         ></buche-branch>
-      
+
       <div
         class="BucheNode_buttons_add_node buttons"
         v-if="
@@ -161,6 +161,7 @@
 <script>
 import BucheBranch from "./BucheBranch.vue";
 
+// TODO fix: eslint error about mutating prop node
 export default {
   components: { BucheBranch },
   name: "BucheNode",

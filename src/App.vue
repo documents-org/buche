@@ -1,26 +1,22 @@
 <template>
   <div id="app">
-    <buche
-      :blocks="blocks"
-      :node="tree"
-      @update:node="tree = $event"></buche>
+    <buche :blocks="blocks" :node="tree" @update:node="tree = $event"></buche>
   </div>
 </template>
 
 <script>
-// eslint-disable-next-line
-import bulma from "bulma/css/bulma.min.css";
-import Buche from './components/Buche.vue';
-import uuidv4 from "uuid/v4";
-import { blocks } from "./blocks";
+import 'bulma/css/bulma.min.css'
+import Buche from '../lib/components/Buche.vue'
+import { v4 as uuidv4 } from 'uuid'
+import { blocks } from '../lib/blocks'
 
 export default {
   name: 'App',
   data() {
     return {
       tree: null,
-      blocks,
-    };
+      blocks
+    }
   },
   components: {
     Buche
@@ -32,7 +28,7 @@ export default {
         type: 'generic',
         data: {},
         children: [],
-        uuid: uuidv4(),
+        uuid: uuidv4()
       }
     }
   }
@@ -40,25 +36,26 @@ export default {
 </script>
 
 <style>
-html, body {
-  font-size: 15px;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.2;
-  min-height: 100%;
-  background: #666;
+html,
+body {
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.2;
+    min-height: 100%;
+    background: #666;
 }
 
 .Buche {
-  margin: 2em;
+    margin: 2em;
 }
 
 .BucheNode_node-cols_2 > .BucheNode_children > .BucheBranch {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .BucheNode_node-cols_2 > .BucheNode_children > .BucheBranch > .BucheNode {
-  flex: 0 0 calc(50% - 1em);
+    flex: 0 0 calc(50% - 1em);
 }
 </style>

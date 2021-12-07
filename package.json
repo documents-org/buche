@@ -1,30 +1,42 @@
 {
   "name": "buche",
   "version": "0.1.0",
-  "main": "dist/buche.common.js",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/buche.umd.js",
+  "module": "./dist/buche.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/buche.es.js",
+      "require": "./dist/buche.umd.js"
+    }
+  },
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint './lib/*.{js, vue, ts}' --fix"
   },
   "dependencies": {
     "bulma": "0.9.3",
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11",
-    "uuid": "3.4.0"
+    "vue": "^3.2.20",
+    "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "@vitejs/plugin-vue": "^1.9.4",
+    "eslint": "^7.12.0",
+    "eslint-plugin-vue": "^7.1.0",
+    "typescript": "4.4.4",
+    "vite": "^2.6.14",
+    "vue-tsc": "^0.29.6"
   },
   "eslintConfig": {
-    "root": true,
     "env": {
       "node": true
     },
@@ -32,9 +44,15 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
+    "parser": "vue-eslint-parser",
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@typescript-eslint/parser",
+      "sourceType": "module"
     },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "root": true,
     "rules": {}
   },
   "browserslist": [
