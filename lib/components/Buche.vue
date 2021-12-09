@@ -15,6 +15,7 @@
     @copy="root_copy_candidate = $event === root_copy_candidate ? null : $event"
     :blocks="blocks"
     :path="[]"
+    :show_labels="show_labels"
     :copy_candidate="root_copy_candidate"
     :teleport_candidate="root_teleport_candidate"
     :node="node"
@@ -40,6 +41,10 @@ export default {
   props: {
     node: {},
     blocks: {},
+    show_labels: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {

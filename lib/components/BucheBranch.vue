@@ -10,6 +10,7 @@
       :teleport_candidate="teleport_candidate"
       :path="[...path, node.type]"
       :blocks="blocks"
+      :show_labels="show_labels"
       :can_destroy="can_destroy"
       @before="handle_before(node.uuid)"
       @after="handle_after(node.uuid)"
@@ -33,6 +34,10 @@ export default {
     nodes: {
       type: Array,
       default: () => [],
+    },
+    show_labels: {
+      type: Boolean,
+      default: false,
     },
     copy_candidate: {},
     teleport_candidate: {},

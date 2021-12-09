@@ -10,68 +10,87 @@
   >
     <div class="BucheNode_header">
       <div style="display: flex">
-        <button class="button is-small" @click="folded = !folded">
-          {{ folded ? "unfold" : "fold" }}
+        <button class="button is-rounded is-small" @click="folded = !folded">
+          <span class="icon is-small" v-if="folded">
+            <i class="mdi mdi-chevron-up"></i>
+          </span>
+          <span v-else>
+            <i class="mdi mdi-chevron-up mdi-rotate-180"></i>
+          </span>
         </button>
         &nbsp;
-        <h3 class="BucheNode_title subtitle">
+        <h3 class="BucheNode_title subtitle" v-show="show_labels">
           {{ find_block(node.type).label }}
         </h3>
       </div>
       <div v-show="!folded" class="BucheNode_actions buttons" v-if="!node.root">
         <button
-          class="BucheNode_action_reorder_prev button is-small"
+          class="BucheNode_action_reorder_prev button is-small is-rounded"
           v-show="show_actions"
           :disabled="index && index === 0"
           @click="$emit('before', node.uuid)"
         >
-          move before
+          <span class="icon is-small">
+            <i class="mdi mdi-arrow-up"></i>
+          </span>
         </button>
         <button
-          class="BucheNode_action_reorder_next button is-small"
+          class="BucheNode_action_reorder_next button is-small is-rounded"
           v-show="show_actions"
           :disabled="index && index === total - 1"
           @click="$emit('after', node.uuid)"
         >
-          move after
+          <span class="icon is-small">
+            <i class="mdi mdi-arrow-down"></i>
+          </span>
         </button>
         <button
-          class="BucheNode_action_reorder_copy button is-small"
+          class="BucheNode_action_reorder_copy button is-small is-rounded"
           v-show="show_actions"
           :class="copy_candidate === node.uuid ? 'is-primary' : ''"
           @click="$emit('copy', node.uuid)"
         >
-          copy
+          <span class="icon is-small">
+            <i class="mdi mdi-content-copy"></i>
+          </span>
         </button>
         <button
-          class="BucheNode_action_reorder_teleport button is-small"
+          class="BucheNode_action_reorder_teleport button is-small is-rounded"
           v-show="show_actions"
           :class="teleport_candidate === node.uuid ? 'is-primary' : ''"
           @click="$emit('teleport', node.uuid)"
         >
-          select for teleportation
+          <span class="icon is-small">
+            <i class="mdi mdi-target"></i>
+          </span>
         </button>
         <button
-          class="BucheNode_action_reorder_destroy button is-small"
+          class="BucheNode_action_reorder_destroy button is-small is-rounded"
           v-show="show_actions"
           :disabled="!can_destroy"
           @click="$emit('destroy')"
         >
-          delete
+          <span class="icon is-small">
+            <i class="mdi mdi-trash"></i>
+          </span>
         </button>
         <button
           v-show="show_actions"
           @click="show_actions = 0"
-          class="BucheNode_action_hide_actions button is-small"
+          class="BucheNode_action_hide_actions button is-small is-rounded"
         >
-          &times;
+          <span class="icon is-small">
+            <i class="mdi mdi-close"></i>
+          </span>
         </button>
         <button
           v-show="!show_actions"
           @click="show_actions = 1"
-          class="BucheNode_action_hide_actions button is-small"
+          class="BucheNode_action_hide_actions button is-small is-rounded"
         >
-          actions
+          <span class="icon is-small">
+            <i class="mdi mdi-cog"></i>
+          </span>
         </button>
       </div>
     </div>
@@ -97,45 +116,53 @@
         No children yet.
       </div>
 
-        <buche-branch
-          :nodes="node.children"
-          :path="[...path, node.type]"
-          :blocks="blocks"
-          :can_destroy="
-            !find_block(node.type).children_min ||
-            find_block(node.type).children_min < node.children.length
-          "
-          :depth="depth + 1"
-          @copy="$emit('copy', $event)"
-          @want_teleport="$emit('want_teleport', $event)"
-          @teleport="$emit('teleport', $event)"
-          @want_copy="$emit('want_copy', $event)"
-          :copy_candidate="copy_candidate"
-          :teleport_candidate="teleport_candidate"
-          @update:nodes="update_nodes"
-        ></buche-branch>
+      <buche-branch
+        :nodes="node.children"
+        :path="[...path, node.type]"
+        :blocks="blocks"
+        :can_destroy="
+          !find_block(node.type).children_min ||
+          find_block(node.type).children_min < node.children.length
+        "
+        :show_labels="show_labels"
+        :depth="depth + 1"
+        @copy="$emit('copy', $event)"
+        @want_teleport="$emit('want_teleport', $event)"
+        @teleport="$emit('teleport', $event)"
+        @want_copy="$emit('want_copy', $event)"
+        :copy_candidate="copy_candidate"
+        :teleport_candidate="teleport_candidate"
+        @update:nodes="update_nodes"
+      ></buche-branch>
 
       <div
-        class="BucheNode_buttons_add_node buttons"
+        class="BucheNode_buttons_add_node"
+        style="margin-top: 1em"
         v-if="
           !find_block(node.type).children_max ||
           find_block(node.type).children_max > node.children.length
         "
       >
-        <button
-          class="button is-small"
-          :class="[
-            `BucheNode_button_add_block`,
-            `BucheNode_button_add_block-${v.type}`,
-          ]"
-          v-for="(v, key) in blocks"
-          :key="key"
-          @click="add_child(v)"
-        >
-          + {{ v.label }}
+        
+        <button class="button is-small" @click="show_adders = !show_adders">
+          {{ show_adders ? "Close block list" : "Add a block" }}
         </button>
+        <div class="buttons" v-show="show_adders" style="margin-top: 1em;">
+          <button
+            class="button is-small"
+            :class="[
+              `BucheNode_button_add_block`,
+              `BucheNode_button_add_block-${v.type}`,
+            ]"
+            v-for="(v, key) in blocks"
+            :key="key"
+            @click="add_child(v)"
+          >
+            {{ v.label }}
+          </button>
+        </div>
       </div>
-      <div class="BucheNode_tree_actions_buttons buttons">
+      <div class="BucheNode_tree_actions_buttons buttons" v-if="teleport_candidate && teleport_candidate !== node.uuid || copy_candidate && copy_candidate !== node.uuid">
         <button
           class="button is-primary is-small"
           v-if="teleport_candidate && teleport_candidate !== node.uuid"
@@ -152,9 +179,6 @@
         </button>
       </div>
     </div>
-    <span v-show="!folded" class="BucheNode_uuid is-size-7">{{
-      node.uuid.slice(0, 8)
-    }}</span>
   </div>
 </template>
 
@@ -176,6 +200,10 @@ export default {
     node: {
       type: Object,
       required: true,
+    },
+    show_labels: {
+      type: Boolean,
+      default: false,
     },
     depth: {
       type: Number,
@@ -221,6 +249,7 @@ export default {
         ...this.node,
         children: [...this.node.children, block.constructor()],
       });
+      this.show_adders = false;
     },
   },
 };
