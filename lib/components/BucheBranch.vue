@@ -4,6 +4,7 @@
       v-for="(node, index) in nodes"
       :node="node"
       :depth="depth"
+      :lang="lang"
       :index="index"
       :total="nodes.length"
       :copy_candidate="copy_candidate"
@@ -26,11 +27,15 @@
 </template>
 
 <script>
-import BucheNode from './BucheNode.vue'
+import BucheNode from "./BucheNode.vue";
 
 export default {
   name: "BucheBranch",
   props: {
+    lang: {
+      type: String,
+      default: "en",
+    },
     nodes: {
       type: Array,
       default: () => [],

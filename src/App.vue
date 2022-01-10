@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <buche :blocks="blocks" :node="tree" @update:node="tree = $event"></buche>
+    <buche :blocks="blocks" :lang="'fr'" :node="tree" @update:node="tree = $event"></buche>
   </div>
 </template>
 

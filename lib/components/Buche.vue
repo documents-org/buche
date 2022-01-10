@@ -1,27 +1,30 @@
 <template>
-    <div class="Buche box">
-  <buche-node
-    v-if="node"
-    :depth="0"
-    :index="0"
-    :total="1"
-    :root="true"
-    @want_teleport="trigger_teleport"
-    @want_copy="trigger_copy"
-    @teleport="
-      root_teleport_candidate =
-        $event === root_teleport_candidate ? null : $event
-    "
-    @copy="root_copy_candidate = $event === root_copy_candidate ? null : $event"
-    :blocks="blocks"
-    :path="[]"
-    :show_labels="show_labels"
-    :copy_candidate="root_copy_candidate"
-    :teleport_candidate="root_teleport_candidate"
-    :node="node"
-    @update:node="$emit('update:node', $event)"
-  ></buche-node>
-    </div>
+  <div class="Buche box">
+    <buche-node
+      v-if="node"
+      :depth="0"
+      :index="0"
+      :total="1"
+      :lang="lang"
+      :root="true"
+      @want_teleport="trigger_teleport"
+      @want_copy="trigger_copy"
+      @teleport="
+        root_teleport_candidate =
+          $event === root_teleport_candidate ? null : $event
+      "
+      @copy="
+        root_copy_candidate = $event === root_copy_candidate ? null : $event
+      "
+      :blocks="blocks"
+      :path="[]"
+      :show_labels="show_labels"
+      :copy_candidate="root_copy_candidate"
+      :teleport_candidate="root_teleport_candidate"
+      :node="node"
+      @update:node="$emit('update:node', $event)"
+    ></buche-node>
+  </div>
 </template>
 
 <script>
@@ -40,6 +43,10 @@ export default {
   },
   props: {
     node: {},
+    lang: {
+      type: String,
+      default: "en",
+    },
     blocks: {},
     show_labels: {
       type: Boolean,

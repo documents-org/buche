@@ -1,0 +1,19 @@
+<meta charset="utf-8">
+<title>buche demo</title>
+<script src="https://unpkg.com/vue"></script>
+<script src="./buche.umd.js"></script>
+
+<link rel="stylesheet" href="./buche.css">
+
+
+<div id="app">
+  <demo></demo>
+</div>
+
+<script>
+new Vue({
+  components: {
+    demo: buche
+  }
+}).$mount('#app')
+</script>
