@@ -58,4 +58,15 @@ body {
 .BucheNode_node-cols_2 > .BucheNode_children > .BucheBranch > .BucheNode {
     flex: 0 0 calc(50% - 1em);
 }
+
+.box.box-small {
+  border-radius: 2px;
+  padding: 0.65em;
+}
+
+.button.is-xsmall {
+  height: 2em;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 </style>

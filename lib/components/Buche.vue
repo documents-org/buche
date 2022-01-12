@@ -1,5 +1,5 @@
 <template>
-  <div class="Buche box">
+  <div class="Buche box box-small">
     <buche-node
       v-if="node"
       :depth="0"
