@@ -17,7 +17,7 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { resolveComponent, openBlock, createElementBlock, Fragment, renderList, createBlock, createElementVNode, toDisplayString, normalizeClass, normalizeStyle, createVNode, withDirectives, vShow, createCommentVNode, resolveDynamicComponent, createTextVNode } from "vue";
+import { resolveComponent, openBlock, createElementBlock, Fragment, renderList, createBlock, createElementVNode, toDisplayString, normalizeClass, withModifiers, normalizeStyle, createVNode, withDirectives, vShow, createCommentVNode, resolveDynamicComponent, createTextVNode } from "vue";
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -116,6 +116,7 @@ const _sfc_main$d = {
       type: Boolean,
       default: false
     },
+    active_node: {},
     copy_candidate: {},
     teleport_candidate: {},
     path: {},
@@ -165,6 +166,8 @@ function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
         depth: $props.depth,
         lang: $props.lang,
         index,
+        active_node: $props.active_node,
+        onActive_node: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("active_node", $event)),
         total: $props.nodes.length,
         copy_candidate: $props.copy_candidate,
         teleport_candidate: $props.teleport_candidate,
@@ -174,14 +177,14 @@ function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
         can_destroy: $props.can_destroy,
         onBefore: ($event) => $options.handle_before(node.uuid),
         onAfter: ($event) => $options.handle_after(node.uuid),
-        onWant_teleport: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("want_teleport", $event)),
+        onWant_teleport: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("want_teleport", $event)),
         onDestroy: ($event) => $options.handle_destroy(node.uuid),
-        onWant_copy: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("want_copy", $event)),
-        onTeleport: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("teleport", $event)),
-        onCopy: _cache[3] || (_cache[3] = ($event) => _ctx.$emit("copy", $event)),
+        onWant_copy: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("want_copy", $event)),
+        onTeleport: _cache[3] || (_cache[3] = ($event) => _ctx.$emit("teleport", $event)),
+        onCopy: _cache[4] || (_cache[4] = ($event) => _ctx.$emit("copy", $event)),
         "onUpdate:node": ($event) => $options.updateBranch(node.uuid, $event),
         key: node.uuid
-      }, null, 8, ["node", "depth", "lang", "index", "total", "copy_candidate", "teleport_candidate", "path", "blocks", "show_labels", "can_destroy", "onBefore", "onAfter", "onDestroy", "onUpdate:node"]);
+      }, null, 8, ["node", "depth", "lang", "index", "active_node", "total", "copy_candidate", "teleport_candidate", "path", "blocks", "show_labels", "can_destroy", "onBefore", "onAfter", "onDestroy", "onUpdate:node"]);
     }), 128))
   ]);
 }
@@ -538,6 +541,7 @@ const _sfc_main$1 = {
       type: String,
       default: "en"
     },
+    active_node: {},
     node: {
       type: Object,
       required: true
@@ -648,7 +652,12 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
       "BucheNode--will_be_teleported": $props.teleport_candidate === $props.node.uuid,
       "BucheNode--will_be_copied": $props.copy_candidate === $props.node.uuid
     }]),
-    style: normalizeStyle({ background: `rgba(0,0,0, ${0.03 * ($props.depth % 4)})` })
+    onMousemove: _cache[17] || (_cache[17] = withModifiers(() => $props.active_node !== $props.node.uuid ? _ctx.$emit("active_node", $props.node.uuid) : 1, ["stop"])),
+    style: normalizeStyle({
+      background: `rgba(0,0,0, ${0.02 * ($props.depth % 4)})`,
+      border: $props.active_node === $props.node.uuid ? "1px solid #0827a2" : "1px solid #aaa",
+      boxShadow: $props.active_node === $props.node.uuid ? "0px 0px 5px rgba(24, 8, 85, 0.5)" : ""
+    })
   }, [
     createElementVNode("div", _hoisted_1$1, [
       createElementVNode("div", _hoisted_2, [
@@ -722,32 +731,34 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
         blocks: $props.blocks,
         lang: $props.lang,
         can_destroy: !$options.find_block($props.node.type).children_min || $options.find_block($props.node.type).children_min < $props.node.children.length,
+        active_node: $props.active_node,
+        onActive_node: _cache[9] || (_cache[9] = ($event) => _ctx.$emit("active_node", $event)),
         show_labels: $props.show_labels,
         depth: $props.depth + 1,
-        onCopy: _cache[9] || (_cache[9] = ($event) => _ctx.$emit("copy", $event)),
-        onWant_teleport: _cache[10] || (_cache[10] = ($event) => _ctx.$emit("want_teleport", $event)),
-        onTeleport: _cache[11] || (_cache[11] = ($event) => _ctx.$emit("teleport", $event)),
-        onWant_copy: _cache[12] || (_cache[12] = ($event) => _ctx.$emit("want_copy", $event)),
+        onCopy: _cache[10] || (_cache[10] = ($event) => _ctx.$emit("copy", $event)),
+        onWant_teleport: _cache[11] || (_cache[11] = ($event) => _ctx.$emit("want_teleport", $event)),
+        onTeleport: _cache[12] || (_cache[12] = ($event) => _ctx.$emit("teleport", $event)),
+        onWant_copy: _cache[13] || (_cache[13] = ($event) => _ctx.$emit("want_copy", $event)),
         copy_candidate: $props.copy_candidate,
         teleport_candidate: $props.teleport_candidate,
         "onUpdate:nodes": $options.update_nodes
-      }, null, 8, ["nodes", "path", "blocks", "lang", "can_destroy", "show_labels", "depth", "copy_candidate", "teleport_candidate", "onUpdate:nodes"]),
+      }, null, 8, ["nodes", "path", "blocks", "lang", "can_destroy", "active_node", "show_labels", "depth", "copy_candidate", "teleport_candidate", "onUpdate:nodes"]),
       !$options.find_block($props.node.type).children_max || $options.find_block($props.node.type).children_max > $props.node.children.length ? (openBlock(), createElementBlock("div", _hoisted_8, [
         createElementVNode("div", _hoisted_9, [
           createVNode(_component_buche_show_adders_button, {
             lang: $props.lang,
             show_adders: $data.show_adders,
-            onClick: _cache[13] || (_cache[13] = ($event) => $data.show_adders = !$data.show_adders)
+            onClick: _cache[14] || (_cache[14] = ($event) => $data.show_adders = !$data.show_adders)
           }, null, 8, ["lang", "show_adders"]),
           $props.teleport_candidate && $props.teleport_candidate !== $props.node.uuid ? (openBlock(), createBlock(_component_buche_receive_teleport_button, {
             key: 0,
             lang: $props.lang,
-            onClick: _cache[14] || (_cache[14] = ($event) => _ctx.$emit("want_teleport", this.node.uuid))
+            onClick: _cache[15] || (_cache[15] = ($event) => _ctx.$emit("want_teleport", this.node.uuid))
           }, null, 8, ["lang"])) : createCommentVNode("", true),
           $props.copy_candidate && $props.copy_candidate !== $props.node.uuid ? (openBlock(), createBlock(_component_buche_receive_copy_button, {
             key: 1,
             lang: $props.lang,
-            onClick: _cache[15] || (_cache[15] = ($event) => _ctx.$emit("want_copy", this.node.uuid))
+            onClick: _cache[16] || (_cache[16] = ($event) => _ctx.$emit("want_copy", this.node.uuid))
           }, null, 8, ["lang"])) : createCommentVNode("", true)
         ]),
         withDirectives(createElementVNode("div", _hoisted_10, [
@@ -769,7 +780,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     ], 512)), [
       [vShow, !$data.folded]
     ]) : createCommentVNode("", true)
-  ], 6);
+  ], 38);
 }
 var BucheNode = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
 const _sfc_main = {
@@ -792,7 +803,8 @@ const _sfc_main = {
   data() {
     return {
       root_teleport_candidate: null,
-      root_copy_candidate: null
+      root_copy_candidate: null,
+      active_node: null
     };
   },
   methods: {
@@ -811,7 +823,10 @@ const _sfc_main = {
     }
   }
 };
-const _hoisted_1 = { class: "Buche box box-small" };
+const _hoisted_1 = {
+  class: "Buche",
+  style: { "background": "white" }
+};
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_buche_node = resolveComponent("buche-node");
   return openBlock(), createElementBlock("div", _hoisted_1, [
@@ -819,21 +834,23 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       key: 0,
       depth: 0,
       index: 0,
+      active_node: $data.active_node,
+      onActive_node: _cache[0] || (_cache[0] = ($event) => $data.active_node = $event),
       total: 1,
       lang: $props.lang,
       root: true,
       onWant_teleport: $options.trigger_teleport,
       onWant_copy: $options.trigger_copy,
-      onTeleport: _cache[0] || (_cache[0] = ($event) => $data.root_teleport_candidate = $event === $data.root_teleport_candidate ? null : $event),
-      onCopy: _cache[1] || (_cache[1] = ($event) => $data.root_copy_candidate = $event === $data.root_copy_candidate ? null : $event),
+      onTeleport: _cache[1] || (_cache[1] = ($event) => $data.root_teleport_candidate = $event === $data.root_teleport_candidate ? null : $event),
+      onCopy: _cache[2] || (_cache[2] = ($event) => $data.root_copy_candidate = $event === $data.root_copy_candidate ? null : $event),
       blocks: $props.blocks,
       path: [],
       show_labels: $props.show_labels,
       copy_candidate: $data.root_copy_candidate,
       teleport_candidate: $data.root_teleport_candidate,
       node: $props.node,
-      "onUpdate:node": _cache[2] || (_cache[2] = ($event) => _ctx.$emit("update:node", $event))
-    }, null, 8, ["lang", "onWant_teleport", "onWant_copy", "blocks", "show_labels", "copy_candidate", "teleport_candidate", "node"])) : createCommentVNode("", true)
+      "onUpdate:node": _cache[3] || (_cache[3] = ($event) => _ctx.$emit("update:node", $event))
+    }, null, 8, ["active_node", "lang", "onWant_teleport", "onWant_copy", "blocks", "show_labels", "copy_candidate", "teleport_candidate", "node"])) : createCommentVNode("", true)
   ]);
 }
 var BucheComponent = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);

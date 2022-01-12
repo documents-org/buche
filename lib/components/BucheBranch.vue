@@ -6,6 +6,8 @@
       :depth="depth"
       :lang="lang"
       :index="index"
+      :active_node="active_node"
+      @active_node="$emit('active_node', $event)"
       :total="nodes.length"
       :copy_candidate="copy_candidate"
       :teleport_candidate="teleport_candidate"
@@ -44,6 +46,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    active_node: {},
     copy_candidate: {},
     teleport_candidate: {},
     path: {},

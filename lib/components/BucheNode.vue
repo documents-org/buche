@@ -1,7 +1,12 @@
 <template>
   <div
     class="BucheNode box box-small"
-    :style="{ background: `rgba(0,0,0, ${0.03 * (depth % 4)})` }"
+    @mousemove.stop="() => active_node !== node.uuid ? $emit('active_node', node.uuid) : 1"
+    :style="{
+      background: `rgba(0,0,0, ${0.02 * (depth % 4)})`,
+      border: active_node === node.uuid ? '1px solid #0827a2' : '1px solid #aaa',
+      boxShadow: active_node === node.uuid ? '0px 0px 5px rgba(24, 8, 85, 0.5)' : '', 
+    }"
     :class="{
       [`BucheNode_node-${node.type}`]: 1,
       'BucheNode--will_be_teleported': teleport_candidate === node.uuid,
@@ -86,6 +91,8 @@
           !find_block(node.type).children_min ||
           find_block(node.type).children_min < node.children.length
         "
+        :active_node="active_node"
+        @active_node="$emit('active_node', $event)"
         :show_labels="show_labels"
         :depth="depth + 1"
         @copy="$emit('copy', $event)"
@@ -184,6 +191,7 @@ export default {
       type: String,
       default: "en",
     },
+    active_node: {},
     node: {
       type: Object,
       required: true,
@@ -258,5 +266,13 @@ export default {
 }
 .BucheNode_children {
   margin: 1em 0;
+}
+.BucheNode_title.subtitle {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.25;
+    position: relative;
+    top: 0.4em;
+    left: 0.4em;
 }
 </style>

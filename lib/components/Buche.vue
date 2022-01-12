@@ -1,9 +1,11 @@
 <template>
-  <div class="Buche box box-small">
+  <div class="Buche" style="background: white;">
     <buche-node
       v-if="node"
       :depth="0"
       :index="0"
+      :active_node="active_node"
+      @active_node="active_node = $event"
       :total="1"
       :lang="lang"
       :root="true"
@@ -57,6 +59,7 @@ export default {
     return {
       root_teleport_candidate: null,
       root_copy_candidate: null,
+      active_node: null,
     };
   },
   methods: {
