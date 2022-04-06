@@ -8,6 +8,7 @@
       boxShadow: active_node === node.uuid ? '0px 0px 5px rgba(24, 8, 85, 0.5)' : '', 
     }"
     :class="{
+      'BucheNode--open_for_edition': open_for_edition,
       [`BucheNode_node-${node.type}`]: 1,
       'BucheNode--will_be_teleported': teleport_candidate === node.uuid,
       'BucheNode--will_be_copied': copy_candidate === node.uuid,
@@ -24,7 +25,19 @@
           {{ find_block(node.type).label }}
         </h3>
       </div>
-      <div v-show="!folded" class="BucheNode_actions buttons" v-if="!node.root">
+      <div v-show="too_small && !open_for_edition">
+       <button
+          class="button is-rounded is-small is-xsmall"
+          @click="open_for_edition = !open_for_edition"
+        >  {{ t_("Edit this block") }}</button>
+      </div>
+      <div v-show="too_small && open_for_edition">
+       <button
+          class="button is-rounded is-small is-xsmall"
+          @click="open_for_edition = !open_for_edition"
+        >  {{ t_("Close this block") }}</button>
+      </div>
+      <div v-show="!too_small || open_for_edition" class="BucheNode_actions buttons" v-if="!node.root">
         <buche-reorder-prev-button
           v-show="show_actions"
           :disabled="index && index === 0"
@@ -61,10 +74,11 @@
       </div>
     </div>
 
+
     <div
       class="BucheNode_editor"
       v-show="!folded"
-      v-if="node.type !== 'generic'"
+      v-if="!too_small && node.type !== 'generic'"
     >
       <component
         :is="find_block(node.type).editor"
@@ -75,7 +89,7 @@
 
     <div
       class="BucheNode_children"
-      v-show="!folded"
+      v-show="(!folded && !too_small) || open_for_edition"
       v-if="find_block(node.type).has_children"
     >
       <div class="BucheNode_children_empty" v-if="node.children.length === 0">
@@ -107,6 +121,7 @@
       <div
         class="BucheNode_buttons_add_node"
         style="margin-top: 1em"
+        v-show="!too_small || open_for_edition"
         v-if="
           !find_block(node.type).children_max ||
           find_block(node.type).children_max > node.children.length
@@ -184,6 +199,8 @@ export default {
       show_actions: false,
       show_adders: false,
       folded: false,
+      too_small: false,
+      open_for_edition: false,
     };
   },
   props: {
@@ -249,6 +266,15 @@ export default {
       });
       this.show_adders = false;
     },
+    check_sizing() {
+      const w = this.$el.getBoundingClientRect().width;
+      if (w < 460) {
+        this.too_small = true; 
+      }
+    },
+  },
+  mounted() {
+    this.check_sizing();
   },
 };
 </script>
@@ -256,6 +282,23 @@ export default {
 <style>
 .BucheNode {
   margin-bottom: 2em;
+  position: relative;
+}
+.BucheNode--open_for_edition {
+    position: fixed;
+    width: 100%;
+    max-width: 1280px;
+    min-height: 600px;
+    max-height: 90vh;
+    overflow-y: scroll;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white!important;
+    z-index: 99;
+}
+.BucheNode--open_for_edition .box {
+  height: 100%;
 }
 .BucheNode_header {
   display: flex;

@@ -12,7 +12,7 @@
       "require": "./dist/buche.umd.js"
     }
   },
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
