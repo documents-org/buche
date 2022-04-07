@@ -268,13 +268,16 @@ export default {
     },
     check_sizing() {
       const w = this.$el.getBoundingClientRect().width;
+      console.log([this.node, w]);
       if (w < 460) {
         this.too_small = true; 
       }
     },
   },
   mounted() {
-    this.check_sizing();
+    setTimeout(() => {
+      this.check_sizing();
+    }, 300);
   },
 };
 </script>
