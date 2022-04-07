@@ -27,7 +27,95 @@ export default {
         root: true,
         type: 'generic',
         data: {},
-        children: [],
+        children: [
+          {
+           data: {},
+            root: false,
+            type: 'cols_2',
+            children: [
+                {
+        root: true,
+        type: 'generic',
+        data: {},
+        children: [
+          {
+           data: {},
+            root: false,
+            type: 'cols_2',
+            children: [
+                {
+        root: true,
+        type: 'generic',
+        data: {},
+        uuid: uuidv4(),
+        children: [{
+            data: {
+                content: "",
+            },
+            root: false,
+            type: 'text',
+            children: [],
+            uuid: uuidv4(),
+        },{
+            data: {
+                content: "",
+            },
+            root: false,
+            type: 'text',
+            children: [],
+            uuid: uuidv4(),
+        }],
+                },
+                {
+        root: true,
+        type: 'generic',
+        data: {},
+        uuid: uuidv4(),
+        children: [{
+            data: {
+                content: "",
+            },
+            root: false,
+            type: 'text',
+            children: [],
+            uuid: uuidv4(),
+        },{
+            data: {
+                content: "",
+            },
+            root: false,
+            type: 'text',
+            children: [],
+            uuid: uuidv4(),
+        }],
+                },
+            ],
+            uuid: uuidv4(),
+          }
+        ],
+        uuid: uuidv4()
+      },{
+        root: true,
+        type: 'generic',
+        data: {},
+        children: [
+          {
+           data: {},
+            root: false,
+            type: 'cols_2',
+            children: [
+                blocks.generic.constructor(),
+                blocks.generic.constructor(),
+            ],
+            uuid: uuidv4(),
+          }
+        ],
+        uuid: uuidv4()
+      }
+            ],
+            uuid: uuidv4(),
+          }
+        ],
         uuid: uuidv4()
       }
     }

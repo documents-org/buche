@@ -90,7 +90,7 @@
     <div
       class="BucheNode_children"
       v-show="(!folded && !too_small) || open_for_edition"
-      v-if="find_block(node.type).has_children"
+      v-if="((!folded && !too_small) || open_for_edition) && find_block(node.type).has_children"
     >
       <div class="BucheNode_children_empty" v-if="node.children.length === 0">
         {{ t_("No children yet.") }}
