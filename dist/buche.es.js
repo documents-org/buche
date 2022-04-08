@@ -608,6 +608,8 @@ const _sfc_main$1 = {
   },
   mounted() {
     setInterval(() => {
+      if (this.open_for_edition)
+        return;
       this.check_sizing();
     }, 300);
     window.addEventListener("resize", this.check_sizing);
@@ -702,7 +704,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: _cache[2] || (_cache[2] = ($event) => $data.open_for_edition = !$data.open_for_edition)
         }, toDisplayString($options.t_("Close this block")), 1)
       ], 512), [
-        [vShow, $data.too_small && $data.open_for_edition]
+        [vShow, $data.open_for_edition]
       ]),
       !$props.node.root ? withDirectives((openBlock(), createElementBlock("div", _hoisted_4, [
         withDirectives(createVNode(_component_buche_reorder_prev_button, {

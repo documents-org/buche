@@ -31,7 +31,7 @@
           @click="open_for_edition = !open_for_edition"
         >  {{ t_("Edit this block") }}</button>
       </div>
-      <div v-show="too_small && open_for_edition">
+      <div v-show="open_for_edition">
        <button
           class="button is-rounded is-small is-xsmall"
           @click="open_for_edition = !open_for_edition"
@@ -275,6 +275,7 @@ export default {
   },
   mounted() {
     setInterval(() => {
+      if (this.open_for_edition) return;
       this.check_sizing();
     }, 300);
     window.addEventListener('resize', this.check_sizing);
