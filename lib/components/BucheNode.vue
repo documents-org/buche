@@ -128,10 +128,12 @@
         "
       >
         <div class="buttons">
-          <buche-show-adders-button :lang="lang" :show_adders="show_adders" @click="show_adders = !show_adders"></buche-show-adders-button>
+          <buche-show-adders-button
+            :lang="lang"
+            :show_adders="show_adders"
+            @click="show_adders = !show_adders"></buche-show-adders-button>
           <buche-receive-teleport-button  :lang="lang" v-if="teleport_candidate && teleport_candidate !== node.uuid"
             @click="$emit('want_teleport', this.node.uuid)"></buche-receive-teleport-button>
-         
           <buche-receive-copy-button 
             :lang="lang" v-if="copy_candidate && copy_candidate !== node.uuid"
             @click="$emit('want_copy', this.node.uuid)"></buche-receive-copy-button>
@@ -268,17 +270,18 @@ export default {
     },
     check_sizing() {
       const w = this.$el.getBoundingClientRect().width;
-      console.log([this.node, w]);
-      if (w < 460) {
-        this.too_small = true; 
-      }
+      this.too_small = w < 460;
     },
   },
   mounted() {
-    setTimeout(() => {
+    setInterval(() => {
       this.check_sizing();
     }, 300);
+    window.addEventListener('resize', this.check_sizing);
   },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.check_sizing);
+  }
 };
 </script>
 

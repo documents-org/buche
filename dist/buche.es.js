@@ -603,16 +603,17 @@ const _sfc_main$1 = {
     },
     check_sizing() {
       const w = this.$el.getBoundingClientRect().width;
-      console.log([this.node, w]);
-      if (w < 460) {
-        this.too_small = true;
-      }
+      this.too_small = w < 460;
     }
   },
   mounted() {
-    setTimeout(() => {
+    setInterval(() => {
       this.check_sizing();
     }, 300);
+    window.addEventListener("resize", this.check_sizing);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.check_sizing);
   }
 };
 const _hoisted_1$1 = { class: "BucheNode_header" };
@@ -756,7 +757,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     ], 512)), [
       [vShow, !$data.folded]
     ]) : createCommentVNode("", true),
-    $options.find_block($props.node.type).has_children ? withDirectives((openBlock(), createElementBlock("div", _hoisted_6, [
+    (!$data.folded && !$data.too_small || $data.open_for_edition) && $options.find_block($props.node.type).has_children ? withDirectives((openBlock(), createElementBlock("div", _hoisted_6, [
       $props.node.children.length === 0 ? (openBlock(), createElementBlock("div", _hoisted_7, toDisplayString($options.t_("No children yet.")), 1)) : createCommentVNode("", true),
       createVNode(_component_buche_branch, {
         nodes: $props.node.children,
