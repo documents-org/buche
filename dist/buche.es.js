@@ -17,7 +17,7 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { resolveComponent, openBlock, createElementBlock, Fragment, renderList, createBlock, createElementVNode, toDisplayString, normalizeClass, withModifiers, normalizeStyle, createVNode, withDirectives, vShow, createCommentVNode, resolveDynamicComponent, createTextVNode } from "vue";
+import { resolveComponent, openBlock, createElementBlock, Fragment, renderList, createBlock, createElementVNode, toDisplayString, withDirectives, vModelText, normalizeClass, withModifiers, normalizeStyle, createVNode, vShow, createCommentVNode, resolveDynamicComponent, createTextVNode } from "vue";
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -95,14 +95,27 @@ const teleport_in_tree = (node, to_teleport, destination_uuid) => {
   const tree = insert_in_tree(node, refresh_uuids(to_teleport), destination_uuid);
   return remove_from_tree(tree, to_teleport.uuid);
 };
+const performUpgrades = (node) => {
+  const n = __spreadValues({}, node);
+  if (typeof n.cssClasses === "undefined") {
+    n.cssClasses = "";
+  }
+  n.children = n.children.map(performUpgrades);
+  return n;
+};
 var _export_sfc = (sfc, props) => {
   for (const [key, val] of props) {
     sfc[key] = val;
   }
   return sfc;
 };
-const _sfc_main$d = {
+const _sfc_main$f = {
   name: "BucheBranch",
+  computed: {
+    tNodes() {
+      return this.nodes;
+    }
+  },
   props: {
     lang: {
       type: String,
@@ -119,7 +132,10 @@ const _sfc_main$d = {
     active_node: {},
     copy_candidate: {},
     teleport_candidate: {},
-    path: {},
+    path: {
+      type: Array,
+      default: () => []
+    },
     depth: {},
     blocks: {},
     can_destroy: {}
@@ -156,11 +172,11 @@ const _sfc_main$d = {
     }
   }
 };
-const _hoisted_1$d = { class: "BucheBranch" };
-function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$e = { class: "BucheBranch" };
+function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_buche_node = resolveComponent("buche-node");
-  return openBlock(), createElementBlock("div", _hoisted_1$d, [
-    (openBlock(true), createElementBlock(Fragment, null, renderList($props.nodes, (node, index) => {
+  return openBlock(), createElementBlock("div", _hoisted_1$e, [
+    (openBlock(true), createElementBlock(Fragment, null, renderList($options.tNodes, (node, index) => {
       return openBlock(), createBlock(_component_buche_node, {
         node,
         depth: $props.depth,
@@ -181,24 +197,24 @@ function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
         onDestroy: ($event) => $options.handle_destroy(node.uuid),
         onWant_copy: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("want_copy", $event)),
         onTeleport: _cache[3] || (_cache[3] = ($event) => _ctx.$emit("teleport", $event)),
-        onCopy: _cache[4] || (_cache[4] = ($event) => _ctx.$emit("copy", $event)),
+        onBucheCopy: _cache[4] || (_cache[4] = ($event) => _ctx.$emit("bucheCopy", $event)),
         "onUpdate:node": ($event) => $options.updateBranch(node.uuid, $event),
         key: node.uuid
       }, null, 8, ["node", "depth", "lang", "index", "active_node", "total", "copy_candidate", "teleport_candidate", "path", "blocks", "show_labels", "can_destroy", "onBefore", "onAfter", "onDestroy", "onUpdate:node"]);
     }), 128))
   ]);
 }
-var BucheBranch = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
-const _sfc_main$c = {
+var BucheBranch = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$f]]);
+const _sfc_main$e = {
   props: {
     folded: {}
   }
 };
-const _hoisted_1$c = {
+const _hoisted_1$d = {
   key: 0,
   class: "icon is-small"
 };
-const _hoisted_2$b = /* @__PURE__ */ createElementVNode("svg", {
+const _hoisted_2$c = /* @__PURE__ */ createElementVNode("svg", {
   style: { "width": "14px", "height": "14px" },
   viewBox: "0 0 24 24"
 }, [
@@ -208,7 +224,7 @@ const _hoisted_2$b = /* @__PURE__ */ createElementVNode("svg", {
   })
 ], -1);
 const _hoisted_3$b = [
-  _hoisted_2$b
+  _hoisted_2$c
 ];
 const _hoisted_4$2 = {
   key: 1,
@@ -226,20 +242,20 @@ const _hoisted_5$2 = /* @__PURE__ */ createElementVNode("svg", {
 const _hoisted_6$2 = [
   _hoisted_5$2
 ];
-function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("button", {
     class: "button is-rounded is-small is-xsmall",
     onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:folded", !$props.folded))
   }, [
-    $props.folded ? (openBlock(), createElementBlock("span", _hoisted_1$c, _hoisted_3$b)) : (openBlock(), createElementBlock("span", _hoisted_4$2, _hoisted_6$2))
+    $props.folded ? (openBlock(), createElementBlock("span", _hoisted_1$d, _hoisted_3$b)) : (openBlock(), createElementBlock("span", _hoisted_4$2, _hoisted_6$2))
   ]);
 }
-var BucheFoldButton = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
-const _sfc_main$b = {
+var BucheFoldButton = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
+const _sfc_main$d = {
   name: "BucheCopyButton"
 };
-const _hoisted_1$b = { class: "BucheNode_action_reorder_copy button is-small is-xsmall is-rounded" };
-const _hoisted_2$a = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
+const _hoisted_1$c = { class: "BucheNode_action_reorder_copy button is-small is-xsmall is-rounded" };
+const _hoisted_2$b = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
   /* @__PURE__ */ createElementVNode("svg", {
     style: { "width": "14px", "height": "14px" },
     viewBox: "0 0 24 24"
@@ -251,17 +267,17 @@ const _hoisted_2$a = /* @__PURE__ */ createElementVNode("span", { class: "icon i
   ])
 ], -1);
 const _hoisted_3$a = [
-  _hoisted_2$a
+  _hoisted_2$b
 ];
-function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$b, _hoisted_3$a);
+function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$c, _hoisted_3$a);
 }
-var BucheCopyButton = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
-const _sfc_main$a = {
+var BucheCopyButton = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
+const _sfc_main$c = {
   name: "BucheTeleportButton"
 };
-const _hoisted_1$a = { class: "BucheNode_action_reorder_teleport button is-small is-xsmall is-rounded" };
-const _hoisted_2$9 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
+const _hoisted_1$b = { class: "BucheNode_action_reorder_teleport button is-small is-xsmall is-rounded" };
+const _hoisted_2$a = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
   /* @__PURE__ */ createElementVNode("svg", {
     style: { "width": "14px", "height": "14px" },
     viewBox: "0 0 24 24"
@@ -273,17 +289,17 @@ const _hoisted_2$9 = /* @__PURE__ */ createElementVNode("span", { class: "icon i
   ])
 ], -1);
 const _hoisted_3$9 = [
-  _hoisted_2$9
+  _hoisted_2$a
 ];
-function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$a, _hoisted_3$9);
+function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$b, _hoisted_3$9);
 }
-var BucheTeleportButton = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
-const _sfc_main$9 = {
+var BucheTeleportButton = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
+const _sfc_main$b = {
   name: "BucheDestroyButton"
 };
-const _hoisted_1$9 = { class: "BucheNode_action_reorder_destroy button is-small is-xsmall is-rounded" };
-const _hoisted_2$8 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
+const _hoisted_1$a = { class: "BucheNode_action_reorder_destroy button is-small is-xsmall is-rounded" };
+const _hoisted_2$9 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
   /* @__PURE__ */ createElementVNode("svg", {
     style: { "width": "14px", "height": "14px" },
     viewBox: "0 0 24 24"
@@ -295,17 +311,17 @@ const _hoisted_2$8 = /* @__PURE__ */ createElementVNode("span", { class: "icon i
   ])
 ], -1);
 const _hoisted_3$8 = [
-  _hoisted_2$8
+  _hoisted_2$9
 ];
-function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$9, _hoisted_3$8);
+function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$a, _hoisted_3$8);
 }
-var BucheDestroyButton = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
-const _sfc_main$8 = {
+var BucheDestroyButton = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
+const _sfc_main$a = {
   name: "BucheCloseActionsButton"
 };
-const _hoisted_1$8 = { class: "BucheNode_action_hide_actions button is-small is-xsmall is-rounded" };
-const _hoisted_2$7 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
+const _hoisted_1$9 = { class: "BucheNode_action_hide_actions button is-small is-xsmall is-rounded" };
+const _hoisted_2$8 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
   /* @__PURE__ */ createElementVNode("svg", {
     style: { "width": "14px", "height": "14px" },
     viewBox: "0 0 24 24"
@@ -317,15 +333,15 @@ const _hoisted_2$7 = /* @__PURE__ */ createElementVNode("span", { class: "icon i
   ])
 ], -1);
 const _hoisted_3$7 = [
-  _hoisted_2$7
+  _hoisted_2$8
 ];
-function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$8, _hoisted_3$7);
+function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$9, _hoisted_3$7);
 }
-var BucheCloseActionsButton = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
-const _sfc_main$7 = {};
-const _hoisted_1$7 = { class: "BucheNode_action_reorder_prev button is-small is-xsmall is-rounded" };
-const _hoisted_2$6 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
+var BucheCloseActionsButton = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
+const _sfc_main$9 = {};
+const _hoisted_1$8 = { class: "BucheNode_action_reorder_prev button is-small is-xsmall is-rounded" };
+const _hoisted_2$7 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
   /* @__PURE__ */ createElementVNode("svg", {
     style: { "width": "14px", "height": "14px" },
     viewBox: "0 0 24 24"
@@ -337,15 +353,15 @@ const _hoisted_2$6 = /* @__PURE__ */ createElementVNode("span", { class: "icon i
   ])
 ], -1);
 const _hoisted_3$6 = [
-  _hoisted_2$6
+  _hoisted_2$7
 ];
-function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$7, _hoisted_3$6);
+function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$8, _hoisted_3$6);
 }
-var BucheReorderPrevButton = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
-const _sfc_main$6 = {};
-const _hoisted_1$6 = { class: "BucheNode_action_reorder_next button is-small is-xsmall is-rounded" };
-const _hoisted_2$5 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
+var BucheReorderPrevButton = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
+const _sfc_main$8 = {};
+const _hoisted_1$7 = { class: "BucheNode_action_reorder_next button is-small is-xsmall is-rounded" };
+const _hoisted_2$6 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
   /* @__PURE__ */ createElementVNode("svg", {
     style: { "width": "14px", "height": "14px" },
     viewBox: "0 0 24 24"
@@ -357,15 +373,15 @@ const _hoisted_2$5 = /* @__PURE__ */ createElementVNode("span", { class: "icon i
   ])
 ], -1);
 const _hoisted_3$5 = [
-  _hoisted_2$5
+  _hoisted_2$6
 ];
-function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$6, _hoisted_3$5);
+function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$7, _hoisted_3$5);
 }
-var BucheReorderNextButton = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
-const _sfc_main$5 = {};
-const _hoisted_1$5 = { class: "BucheNode_action_hide_actions button is-small is-xsmall is-rounded" };
-const _hoisted_2$4 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
+var BucheReorderNextButton = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
+const _sfc_main$7 = {};
+const _hoisted_1$6 = { class: "BucheNode_action_hide_actions button is-small is-xsmall is-rounded" };
+const _hoisted_2$5 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
   /* @__PURE__ */ createElementVNode("svg", {
     style: { "width": "14px", "height": "14px" },
     viewBox: "0 0 24 24"
@@ -377,12 +393,12 @@ const _hoisted_2$4 = /* @__PURE__ */ createElementVNode("span", { class: "icon i
   ])
 ], -1);
 const _hoisted_3$4 = [
-  _hoisted_2$4
+  _hoisted_2$5
 ];
-function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$5, _hoisted_3$4);
+function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$6, _hoisted_3$4);
 }
-var BucheOpenActionsButton = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+var BucheOpenActionsButton = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
 const fr = {
   "No children yet.": "Pas encore de blocs !",
   "Add a block": "Ajouter un bloc",
@@ -406,7 +422,7 @@ const t_ = (string, lang) => {
     return string;
   return s;
 };
-const _sfc_main$4 = {
+const _sfc_main$6 = {
   props: {
     show_adders: {},
     lang: {}
@@ -417,8 +433,8 @@ const _sfc_main$4 = {
     }
   }
 };
-const _hoisted_1$4 = { class: "button is-small is-xsmall" };
-const _hoisted_2$3 = {
+const _hoisted_1$5 = { class: "button is-small is-xsmall" };
+const _hoisted_2$4 = {
   key: 0,
   class: "icon is-small"
 };
@@ -451,14 +467,42 @@ const _hoisted_7$1 = [
   _hoisted_6$1
 ];
 const _hoisted_8$1 = { style: { "margin-left": "0.25em" } };
-function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$4, [
-    $props.show_adders ? (openBlock(), createElementBlock("span", _hoisted_2$3, _hoisted_4$1)) : (openBlock(), createElementBlock("span", _hoisted_5$1, _hoisted_7$1)),
+function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$5, [
+    $props.show_adders ? (openBlock(), createElementBlock("span", _hoisted_2$4, _hoisted_4$1)) : (openBlock(), createElementBlock("span", _hoisted_5$1, _hoisted_7$1)),
     createElementVNode("span", _hoisted_8$1, toDisplayString($props.show_adders ? $options.t_("Close block list") : $options.t_("Add a block")), 1)
   ]);
 }
-var BucheShowAddersButton = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
-const _sfc_main$3 = {
+var BucheShowAddersButton = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+const _sfc_main$5 = {
+  props: { lang: {} },
+  methods: {
+    t_(s) {
+      return t_(s, this.lang);
+    }
+  }
+};
+const _hoisted_1$4 = { class: "button is-primary is-small is-xsmall" };
+const _hoisted_2$3 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
+  /* @__PURE__ */ createElementVNode("svg", {
+    style: { "width": "14px", "height": "14px" },
+    viewBox: "0 0 24 24"
+  }, [
+    /* @__PURE__ */ createElementVNode("path", {
+      fill: "currentColor",
+      d: "M11,2V4.07C7.38,4.53 4.53,7.38 4.07,11H2V13H4.07C4.53,16.62 7.38,19.47 11,19.93V22H13V19.93C16.62,19.47 19.47,16.62 19.93,13H22V11H19.93C19.47,7.38 16.62,4.53 13,4.07V2M11,6.08V8H13V6.09C15.5,6.5 17.5,8.5 17.92,11H16V13H17.91C17.5,15.5 15.5,17.5 13,17.92V16H11V17.91C8.5,17.5 6.5,15.5 6.08,13H8V11H6.09C6.5,8.5 8.5,6.5 11,6.08M12,11A1,1 0 0,0 11,12A1,1 0 0,0 12,13A1,1 0 0,0 13,12A1,1 0 0,0 12,11Z"
+    })
+  ])
+], -1);
+const _hoisted_3$2 = { style: { "margin-left": "0.25em" } };
+function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$4, [
+    _hoisted_2$3,
+    createElementVNode("span", _hoisted_3$2, toDisplayString($options.t_("Teleport here.")), 1)
+  ]);
+}
+var BucheReceiveTeleportButton = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+const _sfc_main$4 = {
   props: { lang: {} },
   methods: {
     t_(s) {
@@ -474,46 +518,69 @@ const _hoisted_2$2 = /* @__PURE__ */ createElementVNode("span", { class: "icon i
   }, [
     /* @__PURE__ */ createElementVNode("path", {
       fill: "currentColor",
-      d: "M11,2V4.07C7.38,4.53 4.53,7.38 4.07,11H2V13H4.07C4.53,16.62 7.38,19.47 11,19.93V22H13V19.93C16.62,19.47 19.47,16.62 19.93,13H22V11H19.93C19.47,7.38 16.62,4.53 13,4.07V2M11,6.08V8H13V6.09C15.5,6.5 17.5,8.5 17.92,11H16V13H17.91C17.5,15.5 15.5,17.5 13,17.92V16H11V17.91C8.5,17.5 6.5,15.5 6.08,13H8V11H6.09C6.5,8.5 8.5,6.5 11,6.08M12,11A1,1 0 0,0 11,12A1,1 0 0,0 12,13A1,1 0 0,0 13,12A1,1 0 0,0 12,11Z"
-    })
-  ])
-], -1);
-const _hoisted_3$2 = { style: { "margin-left": "0.25em" } };
-function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$3, [
-    _hoisted_2$2,
-    createElementVNode("span", _hoisted_3$2, toDisplayString($options.t_("Teleport here.")), 1)
-  ]);
-}
-var BucheReceiveTeleportButton = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
-const _sfc_main$2 = {
-  props: { lang: {} },
-  methods: {
-    t_(s) {
-      return t_(s, this.lang);
-    }
-  }
-};
-const _hoisted_1$2 = { class: "button is-primary is-small is-xsmall" };
-const _hoisted_2$1 = /* @__PURE__ */ createElementVNode("span", { class: "icon is-small" }, [
-  /* @__PURE__ */ createElementVNode("svg", {
-    style: { "width": "14px", "height": "14px" },
-    viewBox: "0 0 24 24"
-  }, [
-    /* @__PURE__ */ createElementVNode("path", {
-      fill: "currentColor",
       d: "M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z"
     })
   ])
 ], -1);
 const _hoisted_3$1 = { style: { "margin-left": "0.25em" } };
-function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("button", _hoisted_1$2, [
-    _hoisted_2$1,
+function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", _hoisted_1$3, [
+    _hoisted_2$2,
     createElementVNode("span", _hoisted_3$1, toDisplayString($options.t_("Paste here.")), 1)
   ]);
 }
-var BucheReceiveCopyButton = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+var BucheReceiveCopyButton = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+const _sfc_main$3 = {
+  props: {
+    editing: {}
+  }
+};
+const _hoisted_1$2 = {
+  key: 0,
+  class: "icon is-small"
+};
+const _hoisted_2$1 = {
+  key: 1,
+  class: "icon is-small"
+};
+function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("button", {
+    class: "button is-rounded is-small is-xsmall",
+    onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:editcss", !$props.editing))
+  }, [
+    !$props.editing ? (openBlock(), createElementBlock("span", _hoisted_1$2, " C ")) : (openBlock(), createElementBlock("span", _hoisted_2$1, " X "))
+  ]);
+}
+var BucheCssButton = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+const _sfc_main$2 = {
+  name: "BucheCssField",
+  props: {
+    classes: {
+      type: String,
+      default: ""
+    }
+  },
+  computed: {
+    v: {
+      get() {
+        return this.classes;
+      },
+      set(v) {
+        this.$emit("update:classes", v);
+      }
+    }
+  }
+};
+function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  return withDirectives((openBlock(), createElementBlock("input", {
+    class: "input is-small",
+    style: { "display": "inline-block", "width": "20ch", "position": "relative", "top": "-3px", "border-radius": "16px", "transform": "scale(0.9)" },
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.v = $event)
+  }, null, 512)), [
+    [vModelText, $options.v]
+  ]);
+}
+var BucheCssField = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
 var BucheNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$1 = {
   components: {
@@ -528,7 +595,9 @@ const _sfc_main$1 = {
     BucheCloseActionsButton,
     BucheShowAddersButton,
     BucheReceiveTeleportButton,
-    BucheReceiveCopyButton
+    BucheReceiveCopyButton,
+    BucheCssButton,
+    BucheCssField
   },
   name: "BucheNode",
   data() {
@@ -537,8 +606,14 @@ const _sfc_main$1 = {
       show_adders: false,
       folded: false,
       too_small: false,
-      open_for_edition: false
+      open_for_edition: false,
+      editing_css: false
     };
+  },
+  computed: {
+    tNode() {
+      return this.node;
+    }
   },
   props: {
     lang: {
@@ -584,6 +659,9 @@ const _sfc_main$1 = {
     }
   },
   methods: {
+    updateClasses(value) {
+      this.$emit("update:node", __spreadProps(__spreadValues({}, this.node), { cssClasses: value }));
+    },
     t_(string) {
       return t_(string, this.lang);
     },
@@ -653,7 +731,10 @@ const _hoisted_12 = {
   class: "BucheNode_tree_actions_buttons buttons"
 };
 function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  var _a, _b;
   const _component_buche_fold_button = resolveComponent("buche-fold-button");
+  const _component_buche_css_field = resolveComponent("buche-css-field");
+  const _component_buche_css_button = resolveComponent("buche-css-button");
   const _component_buche_reorder_prev_button = resolveComponent("buche-reorder-prev-button");
   const _component_buche_reorder_next_button = resolveComponent("buche-reorder-next-button");
   const _component_buche_copy_button = resolveComponent("buche-copy-button");
@@ -672,7 +753,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
       "BucheNode--will_be_teleported": $props.teleport_candidate === $props.node.uuid,
       "BucheNode--will_be_copied": $props.copy_candidate === $props.node.uuid
     }]),
-    onMousemove: _cache[19] || (_cache[19] = withModifiers(() => $props.active_node !== $props.node.uuid ? _ctx.$emit("active_node", $props.node.uuid) : 1, ["stop"])),
+    onMousemove: _cache[20] || (_cache[20] = withModifiers(() => $props.active_node !== $props.node.uuid ? _ctx.$emit("active_node", $props.node.uuid) : 1, ["stop"])),
     style: normalizeStyle({
       background: `rgba(0,0,0, ${0.02 * ($props.depth % 4)})`,
       border: $props.active_node === $props.node.uuid ? "1px solid #0827a2" : "1px solid #aaa",
@@ -707,43 +788,54 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
         [vShow, $data.open_for_edition]
       ]),
       !$props.node.root ? withDirectives((openBlock(), createElementBlock("div", _hoisted_4, [
+        $data.editing_css ? (openBlock(), createBlock(_component_buche_css_field, {
+          key: 0,
+          classes: $props.node.cssClasses || "",
+          "onUpdate:classes": $options.updateClasses
+        }, null, 8, ["classes", "onUpdate:classes"])) : createCommentVNode("", true),
+        withDirectives(createVNode(_component_buche_css_button, {
+          editing: $data.editing_css,
+          "onUpdate:editcss": _cache[3] || (_cache[3] = ($event) => $data.editing_css = $event)
+        }, null, 8, ["editing"]), [
+          [vShow, $data.show_actions]
+        ]),
         withDirectives(createVNode(_component_buche_reorder_prev_button, {
           disabled: $props.index && $props.index === 0,
-          onClick: _cache[3] || (_cache[3] = ($event) => _ctx.$emit("before", $props.node.uuid))
+          onClick: _cache[4] || (_cache[4] = ($event) => _ctx.$emit("before", $props.node.uuid))
         }, null, 8, ["disabled"]), [
           [vShow, $data.show_actions]
         ]),
         withDirectives(createVNode(_component_buche_reorder_next_button, {
-          disabled: $props.index && $props.index === $props.total - 1,
-          onClick: _cache[4] || (_cache[4] = ($event) => _ctx.$emit("after", $props.node.uuid))
+          disabled: $props.index && $props.index === ($props.total || 0) - 1,
+          onClick: _cache[5] || (_cache[5] = ($event) => _ctx.$emit("after", $props.node.uuid))
         }, null, 8, ["disabled"]), [
           [vShow, $data.show_actions]
         ]),
         withDirectives(createVNode(_component_buche_copy_button, {
           class: normalizeClass($props.copy_candidate === $props.node.uuid ? "is-primary" : ""),
-          onClick: _cache[5] || (_cache[5] = ($event) => _ctx.$emit("copy", $props.node.uuid))
+          onClick: _cache[6] || (_cache[6] = ($event) => _ctx.$emit("bucheCopy", $props.node.uuid))
         }, null, 8, ["class"]), [
           [vShow, $data.show_actions]
         ]),
         withDirectives(createVNode(_component_buche_teleport_button, {
           class: normalizeClass($props.teleport_candidate === $props.node.uuid ? "is-primary" : ""),
-          onClick: _cache[6] || (_cache[6] = ($event) => _ctx.$emit("teleport", $props.node.uuid))
+          onClick: _cache[7] || (_cache[7] = ($event) => _ctx.$emit("teleport", $props.node.uuid))
         }, null, 8, ["class"]), [
           [vShow, $data.show_actions]
         ]),
         withDirectives(createVNode(_component_buche_destroy_button, {
           disabled: !$props.can_destroy,
-          onClick: _cache[7] || (_cache[7] = ($event) => _ctx.$emit("destroy"))
+          onClick: _cache[8] || (_cache[8] = ($event) => _ctx.$emit("destroy"))
         }, null, 8, ["disabled"]), [
           [vShow, $data.show_actions]
         ]),
         withDirectives(createVNode(_component_buche_close_actions_button, {
-          onClick: _cache[8] || (_cache[8] = ($event) => $data.show_actions = 0)
+          onClick: _cache[9] || (_cache[9] = ($event) => $data.show_actions = false)
         }, null, 512), [
           [vShow, $data.show_actions]
         ]),
         withDirectives(createVNode(_component_buche_open_actions_button, {
-          onClick: _cache[9] || (_cache[9] = ($event) => $data.show_actions = 1)
+          onClick: _cache[10] || (_cache[10] = ($event) => $data.show_actions = true)
         }, null, 512), [
           [vShow, !$data.show_actions]
         ])
@@ -754,7 +846,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     !$data.too_small && $props.node.type !== "generic" ? withDirectives((openBlock(), createElementBlock("div", _hoisted_5, [
       (openBlock(), createBlock(resolveDynamicComponent($options.find_block($props.node.type).editor), {
         value: $props.node.data,
-        "onUpdate:value": _cache[10] || (_cache[10] = ($event) => $props.node.data = $event)
+        "onUpdate:value": _cache[11] || (_cache[11] = ($event) => $props.node.data = $event)
       }, null, 8, ["value"]))
     ], 512)), [
       [vShow, !$data.folded]
@@ -762,39 +854,39 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     (!$data.folded && !$data.too_small || $data.open_for_edition) && $options.find_block($props.node.type).has_children ? withDirectives((openBlock(), createElementBlock("div", _hoisted_6, [
       $props.node.children.length === 0 ? (openBlock(), createElementBlock("div", _hoisted_7, toDisplayString($options.t_("No children yet.")), 1)) : createCommentVNode("", true),
       createVNode(_component_buche_branch, {
-        nodes: $props.node.children,
-        path: [...$props.path, $props.node.type],
+        nodes: $options.tNode.children,
+        path: [...$props.path, $options.tNode.type],
         blocks: $props.blocks,
         lang: $props.lang,
-        can_destroy: !$options.find_block($props.node.type).children_min || $options.find_block($props.node.type).children_min < $props.node.children.length,
+        can_destroy: !$options.find_block($options.tNode.type).children_min || ((_a = $options.find_block($options.tNode.type).children_min) != null ? _a : 0) < $props.node.children.length,
         active_node: $props.active_node,
-        onActive_node: _cache[11] || (_cache[11] = ($event) => _ctx.$emit("active_node", $event)),
+        onActive_node: _cache[12] || (_cache[12] = ($event) => _ctx.$emit("active_node", $event)),
         show_labels: $props.show_labels,
         depth: $props.depth + 1,
-        onCopy: _cache[12] || (_cache[12] = ($event) => _ctx.$emit("copy", $event)),
-        onWant_teleport: _cache[13] || (_cache[13] = ($event) => _ctx.$emit("want_teleport", $event)),
-        onTeleport: _cache[14] || (_cache[14] = ($event) => _ctx.$emit("teleport", $event)),
-        onWant_copy: _cache[15] || (_cache[15] = ($event) => _ctx.$emit("want_copy", $event)),
+        onBucheCopy: _cache[13] || (_cache[13] = ($event) => _ctx.$emit("bucheCopy", $event)),
+        onWant_teleport: _cache[14] || (_cache[14] = ($event) => _ctx.$emit("want_teleport", $event)),
+        onTeleport: _cache[15] || (_cache[15] = ($event) => _ctx.$emit("teleport", $event)),
+        onWant_copy: _cache[16] || (_cache[16] = ($event) => _ctx.$emit("want_copy", $event)),
         copy_candidate: $props.copy_candidate,
         teleport_candidate: $props.teleport_candidate,
         "onUpdate:nodes": $options.update_nodes
       }, null, 8, ["nodes", "path", "blocks", "lang", "can_destroy", "active_node", "show_labels", "depth", "copy_candidate", "teleport_candidate", "onUpdate:nodes"]),
-      !$options.find_block($props.node.type).children_max || $options.find_block($props.node.type).children_max > $props.node.children.length ? withDirectives((openBlock(), createElementBlock("div", _hoisted_8, [
+      !$options.find_block($options.tNode.type).children_max || ((_b = $options.find_block($options.tNode.type).children_max) != null ? _b : 999) > $options.tNode.children.length ? withDirectives((openBlock(), createElementBlock("div", _hoisted_8, [
         createElementVNode("div", _hoisted_9, [
           createVNode(_component_buche_show_adders_button, {
             lang: $props.lang,
             show_adders: $data.show_adders,
-            onClick: _cache[16] || (_cache[16] = ($event) => $data.show_adders = !$data.show_adders)
+            onClick: _cache[17] || (_cache[17] = ($event) => $data.show_adders = !$data.show_adders)
           }, null, 8, ["lang", "show_adders"]),
           $props.teleport_candidate && $props.teleport_candidate !== $props.node.uuid ? (openBlock(), createBlock(_component_buche_receive_teleport_button, {
             key: 0,
             lang: $props.lang,
-            onClick: _cache[17] || (_cache[17] = ($event) => _ctx.$emit("want_teleport", this.node.uuid))
+            onClick: _cache[18] || (_cache[18] = ($event) => _ctx.$emit("want_teleport", $options.tNode.uuid))
           }, null, 8, ["lang"])) : createCommentVNode("", true),
           $props.copy_candidate && $props.copy_candidate !== $props.node.uuid ? (openBlock(), createBlock(_component_buche_receive_copy_button, {
             key: 1,
             lang: $props.lang,
-            onClick: _cache[18] || (_cache[18] = ($event) => _ctx.$emit("want_copy", this.node.uuid))
+            onClick: _cache[19] || (_cache[19] = ($event) => _ctx.$emit("want_copy", $options.tNode.uuid))
           }, null, 8, ["lang"])) : createCommentVNode("", true)
         ]),
         withDirectives(createElementVNode("div", _hoisted_10, [
@@ -838,6 +930,14 @@ const _sfc_main = {
       default: true
     }
   },
+  computed: {
+    tNode() {
+      return this.node;
+    },
+    tBlocks() {
+      return this.blocks;
+    }
+  },
   data() {
     return {
       root_teleport_candidate: null,
@@ -845,16 +945,25 @@ const _sfc_main = {
       active_node: null
     };
   },
+  mounted() {
+    if (!this.node)
+      return;
+    this.$emit("update:node", performUpgrades(this.node));
+  },
   methods: {
     trigger_teleport(to_uuid) {
       const source_uuid = this.root_teleport_candidate;
       const source_node = find_node(this.node, source_uuid);
+      if (source_node === null)
+        return;
       this.$emit("update:node", teleport_in_tree(this.node, source_node, to_uuid));
       this.root_teleport_candidate = null;
     },
     trigger_copy(to_uuid) {
       const source_uuid = this.root_copy_candidate;
       const source_node = find_node(this.node, source_uuid);
+      if (source_node === null)
+        return;
       const copy = refresh_uuids(source_node);
       this.$emit("update:node", insert_in_tree(this.node, copy, to_uuid));
       this.root_copy_candidate = null;
@@ -880,13 +989,13 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       onWant_teleport: $options.trigger_teleport,
       onWant_copy: $options.trigger_copy,
       onTeleport: _cache[1] || (_cache[1] = ($event) => $data.root_teleport_candidate = $event === $data.root_teleport_candidate ? null : $event),
-      onCopy: _cache[2] || (_cache[2] = ($event) => $data.root_copy_candidate = $event === $data.root_copy_candidate ? null : $event),
-      blocks: $props.blocks,
+      onBucheCopy: _cache[2] || (_cache[2] = ($event) => $data.root_copy_candidate = $event === $data.root_copy_candidate ? null : $event),
+      blocks: $options.tBlocks,
       path: [],
       show_labels: $props.show_labels,
       copy_candidate: $data.root_copy_candidate,
       teleport_candidate: $data.root_teleport_candidate,
-      node: $props.node,
+      node: $options.tNode,
       "onUpdate:node": _cache[3] || (_cache[3] = ($event) => _ctx.$emit("update:node", $event))
     }, null, 8, ["active_node", "lang", "onWant_teleport", "onWant_copy", "blocks", "show_labels", "copy_candidate", "teleport_candidate", "node"])) : createCommentVNode("", true)
   ]);

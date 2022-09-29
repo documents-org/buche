@@ -4,10 +4,11 @@
       :total="1" :lang="lang" :root="true" @want_teleport="trigger_teleport" @want_copy="trigger_copy" @teleport="
         root_teleport_candidate =
           $event === root_teleport_candidate ? null : $event
-      " @copy="
+      " @bucheCopy="
         root_copy_candidate = $event === root_copy_candidate ? null : $event
-      " :blocks="blocks" :path="[]" :show_labels="show_labels" :copy_candidate="root_copy_candidate"
-      :teleport_candidate="root_teleport_candidate" :node="node" @update:node="$emit('update:node', $event)">
+      " :blocks="tBlocks" :path="[]" :show_labels="show_labels" :copy_candidate="root_copy_candidate"
+      :teleport_candidate="root_teleport_candidate"
+      :node="tNode" @update:node="$emit('update:node', $event)">
     </buche-node>
   </div>
 </template>
@@ -15,6 +16,7 @@
 <script lang="ts">
 // @ts-nocheck
 // migration in progress
+import { Block, BlockDescription } from "..";
 import {
   teleport_in_tree,
   find_node,
@@ -39,6 +41,14 @@ export default {
     show_labels: {
       type: Boolean,
       default: true,
+    },
+  },
+  computed: {
+    tNode() {
+      return this.node as Block;
+    },
+    tBlocks() {
+      return this.blocks as Record<string, BlockDescription>;
     },
   },
   data() {

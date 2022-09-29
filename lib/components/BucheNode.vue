@@ -51,13 +51,13 @@
         ></buche-reorder-prev-button>
         <buche-reorder-next-button
           v-show="show_actions"
-          :disabled="index && index === total - 1"
+          :disabled="index && index === (total || 0) - 1"
           @click="$emit('after', node.uuid)"
         ></buche-reorder-next-button>
         <buche-copy-button
           v-show="show_actions"
           :class="copy_candidate === node.uuid ? 'is-primary' : ''"
-          @click="$emit('copy', node.uuid)"
+          @click="$emit('bucheCopy', node.uuid)"
         ></buche-copy-button>
         <buche-teleport-button
           v-show="show_actions"
@@ -116,7 +116,7 @@
         @active_node="$emit('active_node', $event)"
         :show_labels="show_labels"
         :depth="depth + 1"
-        @copy="$emit('copy', $event)"
+        @bucheCopy="$emit('bucheCopy', $event)"
         @want_teleport="$emit('want_teleport', $event)"
         @teleport="$emit('teleport', $event)"
         @want_copy="$emit('want_copy', $event)"

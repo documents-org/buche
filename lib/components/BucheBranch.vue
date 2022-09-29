@@ -21,7 +21,7 @@
       @destroy="handle_destroy((node).uuid)"
       @want_copy="$emit('want_copy', $event)"
       @teleport="$emit('teleport', $event)"
-      @copy="$emit('copy', $event)"
+      @bucheCopy="$emit('bucheCopy', $event)"
       @update:node="updateBranch((node).uuid, $event)"
       :key="node.uuid"
     ></buche-node>
