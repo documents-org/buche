@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'lib/out.js'),
+      entry: path.resolve(__dirname, 'lib/out.ts'),
       name: 'Buche',
       fileName: (format) => `buche.${format}.js`
     },

@@ -28,7 +28,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Block } from "..";
 import BucheNode from "./BucheNode.vue";
 
 export default {
@@ -58,32 +59,32 @@ export default {
     this.$options.components = { BucheNode };
   },
   methods: {
-    handle_before(uuid) {
-      const index = this.nodes.findIndex((n) => n.uuid === uuid);
+    handle_before(uuid: string) {
+      const index = this.nodes.findIndex((n: Block) => n.uuid === uuid);
       if (index === 0 || !index) return;
       const nodes = [...this.nodes];
       const item = nodes.splice(index, 1)[0];
       nodes.splice(index - 1, 0, item);
       this.$emit("update:nodes", nodes);
     },
-    handle_after(uuid) {
-      const index = this.nodes.findIndex((n) => n.uuid === uuid);
+    handle_after(uuid: string) {
+      const index = this.nodes.findIndex((n: Block) => n.uuid === uuid);
       if (index === this.nodes.length - 1 || (!index && index !== 0)) return;
       const nodes = [...this.nodes];
       const item = nodes.splice(index, 1)[0];
       nodes.splice(index + 1, 0, item);
       this.$emit("update:nodes", nodes);
     },
-    handle_destroy(uuid) {
+    handle_destroy(uuid: string) {
       this.$emit(
         "update:nodes",
         [...this.nodes].filter((a) => a.uuid !== uuid)
       );
     },
-    updateBranch(uuid, node) {
+    updateBranch(uuid: string, node: Block) {
       this.$emit(
         "update:nodes",
-        this.nodes.map((a) => {
+        this.nodes.map((a: Block) => {
           return a.uuid === uuid ? node : a;
         })
       );

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-
-export const generic_block = {
+import { BlockDescription } from '.';
+export const generic_block : BlockDescription = {
     type: 'generic',
     label: 'Groupe',
     constructor: () => ({

@@ -1,7 +1,8 @@
 import { generic_block } from './generic_block';
 import { v4 as uuidv4 } from "uuid";
+import { BlockDescription } from '.';
 
-export const blocks = {
+export const blocks : Record<string, BlockDescription> = {
     text: {
         type: 'text',
         label: 'Bloc texte',

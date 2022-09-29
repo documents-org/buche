@@ -38,6 +38,12 @@
         >  {{ t_("Close this block") }}</button>
       </div>
       <div v-show="!too_small || open_for_edition" class="BucheNode_actions buttons" v-if="!node.root">
+        <buche-css-field v-if="editing_css" :classes="node.cssClasses || ''" @update:classes="updateClasses"></buche-css-field>
+        <buche-css-button
+          v-show="show_actions"
+          :editing="editing_css"
+          @update:editcss="editing_css = $event">
+        </buche-css-button>
         <buche-reorder-prev-button
           v-show="show_actions"
           :disabled="index && index === 0"
@@ -71,6 +77,7 @@
           v-show="!show_actions"
           @click="show_actions = 1"
         ></buche-open-actions-button>
+        
       </div>
     </div>
 
@@ -164,7 +171,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BucheBranch from "./BucheBranch.vue";
 import BucheFoldButton from "./controls/BucheFoldButton.vue";
 import BucheCopyButton from "./controls/BucheCopyButton.vue";
@@ -178,6 +185,9 @@ import BucheShowAddersButton from "./controls/BucheShowAddersButton.vue";
 import BucheReceiveTeleportButton from "./controls/BucheReceiveTeleportButton.vue"
 import { t_ } from "./../lang/index";
 import BucheReceiveCopyButton from './controls/BucheReceiveCopyButton.vue';
+import { Block, BlockDescription } from "..";
+import BucheCssButton from "./controls/BucheCssButton.vue";
+import BucheCssField from "./controls/BucheCssField.vue";
 
 // TODO fix: eslint error about mutating prop node
 export default {
@@ -193,8 +203,10 @@ export default {
     BucheCloseActionsButton,
     BucheShowAddersButton,
     BucheReceiveTeleportButton,
-    BucheReceiveCopyButton
-  },
+    BucheReceiveCopyButton,
+    BucheCssButton,
+    BucheCssField
+},
   name: "BucheNode",
   data() {
     return {
@@ -203,6 +215,7 @@ export default {
       folded: false,
       too_small: false,
       open_for_edition: false,
+      editing_css: false,
     };
   },
   props: {
@@ -249,19 +262,22 @@ export default {
     },
   },
   methods: {
-    t_(string) {
+    updateClasses(value) {
+      this.$emit('update:node', {...this.node, cssClasses: value});
+    },
+    t_(string: string) {
       return t_(string, this.lang);
     },
-    find_block(type) {
+    find_block(type: string) : BlockDescription {
       return this.blocks[type];
     },
-    update_nodes(payload) {
+    update_nodes(payload: Block[]) {
       this.$emit("update:node", {
         ...this.node,
         children: payload,
       });
     },
-    add_child(block) {
+    add_child(block: BlockDescription) {
       this.$emit("update:node", {
         ...this.node,
         children: [...this.node.children, block.constructor()],
