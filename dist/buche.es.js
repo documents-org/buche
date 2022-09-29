@@ -1018,3 +1018,4 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 var Buche = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
 export { Buche, generic_block, root_node };
+//# sourceMappingURL=buche.es.js.map

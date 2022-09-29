@@ -5,13 +5,12 @@
 </template>
 
 <script lang="ts" setup>
-import Buche from 'buche'
-import { Block } from "buche";
+import {Buche, generic_block} from 'buche'
 import { v4 as uuidv4 } from 'uuid'
 import { onMounted, ref, Ref } from 'vue';
 import { blocks } from './blocks'
 
-const tree: Ref<null | Block> = ref(null);
+const tree = ref(generic_block.constructor());
 onMounted(() => {
   tree.value = {
     root: true,

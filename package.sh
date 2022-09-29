@@ -1,2 +1,2 @@
 #!/bin/bash
-yarn build --target=lib src/out.ts
+yarn build --target=lib src/main.ts
