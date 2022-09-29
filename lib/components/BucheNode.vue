@@ -71,11 +71,11 @@
         ></buche-destroy-button>
         <buche-close-actions-button
           v-show="show_actions"
-          @click="show_actions = 0"
+          @click="show_actions = false"
         ></buche-close-actions-button>
         <buche-open-actions-button
           v-show="!show_actions"
-          @click="show_actions = 1"
+          @click="show_actions = true"
         ></buche-open-actions-button>
         
       </div>
@@ -104,13 +104,13 @@
       </div>
 
       <buche-branch
-        :nodes="node.children"
-        :path="[...path, node.type]"
+        :nodes="tNode.children"
+        :path="[...path, tNode.type]"
         :blocks="blocks"
         :lang="lang"
         :can_destroy="
-          !find_block(node.type).children_min ||
-          find_block(node.type).children_min < node.children.length
+          !find_block(tNode.type).children_min ||
+          (find_block(tNode.type).children_min ?? 0) < node.children.length
         "
         :active_node="active_node"
         @active_node="$emit('active_node', $event)"
@@ -130,8 +130,8 @@
         style="margin-top: 1em"
         v-show="!too_small || open_for_edition"
         v-if="
-          !find_block(node.type).children_max ||
-          find_block(node.type).children_max > node.children.length
+          !find_block(tNode.type).children_max ||
+          (find_block(tNode.type).children_max ?? 999) > tNode.children.length
         "
       >
         <div class="buttons">
@@ -140,10 +140,10 @@
             :show_adders="show_adders"
             @click="show_adders = !show_adders"></buche-show-adders-button>
           <buche-receive-teleport-button  :lang="lang" v-if="teleport_candidate && teleport_candidate !== node.uuid"
-            @click="$emit('want_teleport', this.node.uuid)"></buche-receive-teleport-button>
+            @click="$emit('want_teleport', tNode.uuid)"></buche-receive-teleport-button>
           <buche-receive-copy-button 
             :lang="lang" v-if="copy_candidate && copy_candidate !== node.uuid"
-            @click="$emit('want_copy', this.node.uuid)"></buche-receive-copy-button>
+            @click="$emit('want_copy', tNode.uuid)"></buche-receive-copy-button>
         </div>
         <div class="buttons" v-show="show_adders" style="margin-top: 1em">
           <button
@@ -172,6 +172,8 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
+// migration in progress
 import BucheBranch from "./BucheBranch.vue";
 import BucheFoldButton from "./controls/BucheFoldButton.vue";
 import BucheCopyButton from "./controls/BucheCopyButton.vue";
@@ -217,6 +219,11 @@ export default {
       open_for_edition: false,
       editing_css: false,
     };
+  },
+  computed: {
+    tNode() {
+      return this.node as Block;
+    }
   },
   props: {
     lang: {

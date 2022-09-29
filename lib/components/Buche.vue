@@ -13,6 +13,8 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
+// migration in progress
 import {
   teleport_in_tree,
   find_node,

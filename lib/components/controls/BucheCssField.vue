@@ -3,6 +3,8 @@
 </template>
 
 <script lang="ts">
+    // @ts-nocheck
+// migration in progress
 export default {
     name: "BucheCssField",
     props: {

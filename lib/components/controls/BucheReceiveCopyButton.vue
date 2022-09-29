@@ -10,6 +10,8 @@
 </template>
 
 <script>
+// @ts-nocheck
+// migration in progress
 import { t_ } from "./../../lang";
 
 export default {

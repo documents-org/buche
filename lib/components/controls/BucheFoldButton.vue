@@ -14,6 +14,8 @@
 </template>
 
 <script>
+// @ts-nocheck
+// migration in progress
 export default {
   props: {
     folded: {},

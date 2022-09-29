@@ -1,7 +1,7 @@
 <template>
   <div class="BucheBranch">
     <buche-node
-      v-for="(node, index) in nodes"
+      v-for="(node, index) in tNodes"
       :node="node"
       :depth="depth"
       :lang="lang"
@@ -11,29 +11,36 @@
       :total="nodes.length"
       :copy_candidate="copy_candidate"
       :teleport_candidate="teleport_candidate"
-      :path="[...path, node.type]"
+      :path="[...path, (node).type]"
       :blocks="blocks"
       :show_labels="show_labels"
       :can_destroy="can_destroy"
-      @before="handle_before(node.uuid)"
-      @after="handle_after(node.uuid)"
+      @before="handle_before((node).uuid)"
+      @after="handle_after((node).uuid)"
       @want_teleport="$emit('want_teleport', $event)"
-      @destroy="handle_destroy(node.uuid)"
+      @destroy="handle_destroy((node).uuid)"
       @want_copy="$emit('want_copy', $event)"
       @teleport="$emit('teleport', $event)"
       @copy="$emit('copy', $event)"
-      @update:node="updateBranch(node.uuid, $event)"
+      @update:node="updateBranch((node).uuid, $event)"
       :key="node.uuid"
     ></buche-node>
   </div>
 </template>
 
 <script lang="ts">
+// @ts-nocheck
+// migration in progress.
 import { Block } from "..";
 import BucheNode from "./BucheNode.vue";
 
 export default {
   name: "BucheBranch",
+  computed: {
+    tNodes() {
+      return this.nodes as Block[];
+    }
+  },
   props: {
     lang: {
       type: String,
@@ -50,7 +57,10 @@ export default {
     active_node: {},
     copy_candidate: {},
     teleport_candidate: {},
-    path: {},
+    path: {
+      type: Array,
+      default: () => [],  
+    },
     depth: {},
     blocks: {},
     can_destroy: {},

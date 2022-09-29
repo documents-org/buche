@@ -9,6 +9,8 @@
 </template>
 
 <script>
+// @ts-nocheck
+// migration in progress
 export default {};
 </script>
 
