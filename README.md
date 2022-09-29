@@ -21,6 +21,7 @@ Quelques idées de blocs : Titre, Code, Texte, Image, Vidéo (plusieurs héberge
 - [ ] Gestion de règles avancées
 - [x] Blocs étant eux-mêmes des arbres (2 colonnes, 4 colonnes)
 - [x] Enfants autorisés / interdis, enfants mini, enfants maxi
+- [x] Ajout de classes CSS sur un noeud particulier.
 
 ![screenshot](buche.png)
 
@@ -50,6 +51,7 @@ this.tree = {
     data: {},
     children: [],
     uuid: uuidv4(),
+    cssClasses: "",
 }
 ```
 
@@ -68,6 +70,7 @@ export const blocks = {
             type: 'text',
             children: [],
             uuid: uuidv4(),
+            cssClasses: "",
         }),
         editor: 'TextEditor', 
         has_children: false,
@@ -81,6 +84,7 @@ export const blocks = {
             type: 'generic',
             children: [],
             uuid: uuidv4(),
+            cssClasses: "",
         }),
         children_min: 0,
         has_children: true,
