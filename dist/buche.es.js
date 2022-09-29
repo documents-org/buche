@@ -59,6 +59,22 @@ function v4(options, buf, offset) {
   }
   return stringify(rnds);
 }
+const generic_block = {
+  type: "generic",
+  label: "Groupe",
+  constructor: () => ({
+    data: {},
+    root: false,
+    type: "generic",
+    children: [],
+    uuid: v4()
+  }),
+  children_min: 0,
+  has_children: true
+};
+const root_node = () => __spreadProps(__spreadValues({}, generic_block.constructor()), {
+  root: true
+});
 const find_node = (node, uuid) => {
   if (node.uuid === uuid) {
     return node;
@@ -1000,22 +1016,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }, null, 8, ["active_node", "lang", "onWant_teleport", "onWant_copy", "blocks", "show_labels", "copy_candidate", "teleport_candidate", "node"])) : createCommentVNode("", true)
   ]);
 }
-var BucheComponent = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-const generic_block = {
-  type: "generic",
-  label: "Groupe",
-  constructor: () => ({
-    data: {},
-    root: false,
-    type: "generic",
-    children: [],
-    uuid: v4()
-  }),
-  children_min: 0,
-  has_children: true
-};
-const root_node = () => __spreadProps(__spreadValues({}, generic_block.constructor()), {
-  root: true
-});
-const Buche = BucheComponent;
-export { Buche, BucheComponent as default, generic_block, root_node };
+var Buche = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+export { Buche, generic_block, root_node };

@@ -1,6 +1,6 @@
 {
   "name": "buche",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "files": [
     "dist"
   ],
@@ -23,6 +23,7 @@
     "@types/uuid": "^8.3.4",
     "bulma": "0.9.3",
     "uuid": "8.3.2",
+    "vite-dts": "^1.0.4",
     "vue": "^3.2.20"
   },
   "devDependencies": {
