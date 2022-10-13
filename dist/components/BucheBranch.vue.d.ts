@@ -9,6 +9,11 @@ declare const _default: {
             type: StringConstructor;
             default: string;
         };
+        inside_developed_block: {
+            type: BooleanConstructor;
+            required: boolean;
+            default: boolean;
+        };
         nodes: {
             type: ArrayConstructor;
             default: () => any[];

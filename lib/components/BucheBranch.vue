@@ -13,6 +13,7 @@
       :teleport_candidate="teleport_candidate"
       :path="[...path, (node).type]"
       :blocks="blocks"
+      :inside_developed_block="inside_developed_block"
       :show_labels="show_labels"
       :can_destroy="can_destroy"
       @before="handle_before((node).uuid)"
@@ -45,6 +46,11 @@ export default {
     lang: {
       type: String,
       default: "en",
+    },
+    inside_developed_block: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     nodes: {
       type: Array,

@@ -25,7 +25,7 @@
           {{ find_block(node.type).label }}
         </h3>
       </div>
-      <div v-show="too_small && !open_for_edition">
+      <div v-show="too_small && !open_for_edition && !inside_developed_block">
        <button
           class="button is-rounded is-small is-xsmall"
           @click="open_for_edition = !open_for_edition"
@@ -37,7 +37,7 @@
           @click="open_for_edition = !open_for_edition"
         >  {{ t_("Close this block") }}</button>
       </div>
-      <div v-show="!too_small || open_for_edition" class="BucheNode_actions buttons" v-if="!node.root">
+      <div v-show="!too_small || open_for_edition || inside_developed_block" class="BucheNode_actions buttons" v-if="!node.root">
         <buche-css-field v-if="editing_css" :classes="node.cssClasses || ''" @update:classes="updateClasses"></buche-css-field>
         <buche-css-button
           v-show="show_actions"
@@ -85,7 +85,7 @@
     <div
       class="BucheNode_editor"
       v-show="!folded"
-      v-if="!too_small && node.type !== 'generic'"
+      v-if="(!too_small || inside_developed_block || open_for_edition) && node.type !== 'generic'"
     >
       <component
         :is="find_block(node.type).editor"
@@ -96,8 +96,8 @@
 
     <div
       class="BucheNode_children"
-      v-show="(!folded && !too_small) || open_for_edition"
-      v-if="((!folded && !too_small) || open_for_edition) && find_block(node.type).has_children"
+      v-show="(!folded && !too_small) || open_for_edition || inside_developed_block"
+      v-if="((!folded && !too_small) || open_for_edition || inside_developed_block) && find_block(node.type).has_children"
     >
       <div class="BucheNode_children_empty" v-if="node.children.length === 0">
         {{ t_("No children yet.") }}
@@ -115,6 +115,7 @@
         :active_node="active_node"
         @active_node="$emit('active_node', $event)"
         :show_labels="show_labels"
+        :inside_developed_block="open_for_edition ? true : inside_developed_block"
         :depth="depth + 1"
         @bucheCopy="$emit('bucheCopy', $event)"
         @want_teleport="$emit('want_teleport', $event)"
@@ -128,7 +129,7 @@
       <div
         class="BucheNode_buttons_add_node"
         style="margin-top: 1em"
-        v-show="!too_small || open_for_edition"
+        v-show="!too_small || open_for_edition || inside_developed_block"
         v-if="
           !find_block(tNode.type).children_max ||
           (find_block(tNode.type).children_max ?? 999) > tNode.children.length
@@ -229,6 +230,11 @@ export default {
     lang: {
       type: String,
       default: "en",
+    },
+    inside_developed_block: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     active_node: {},
     node: {

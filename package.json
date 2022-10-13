@@ -1,12 +1,16 @@
 {
   "name": "buche",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "files": [
     "dist"
   ],
   "main": "./dist/buche.umd.js",
   "module": "./dist/buche.es.js",
   "exports": {
+    "./dist/index.css": {
+      "import": "./dist/style.css",
+      "require": "./dist/style.css"
+    },
     ".": {
       "import": "./dist/buche.es.js",
       "require": "./dist/buche.umd.js"
