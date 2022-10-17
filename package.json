@@ -7,7 +7,7 @@
   "main": "./dist/buche.umd.js",
   "module": "./dist/buche.es.js",
   "exports": {
-    "./dist/index.css": {
+    "./dist/style.css": {
       "import": "./dist/style.css",
       "require": "./dist/style.css"
     },
